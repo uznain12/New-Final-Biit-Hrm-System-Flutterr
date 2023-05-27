@@ -15,17 +15,17 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
-class HiredEmployeeDashboard extends StatefulWidget {
+class HodDashboard extends StatefulWidget {
   int? uid;
-  HiredEmployeeDashboard({required this.uid});
+  HodDashboard({required this.uid});
 
   @override
-  State<HiredEmployeeDashboard> createState() => _HiredEmployeeDashboardState();
+  State<HodDashboard> createState() => _HodDashboardState();
 }
 
 List<Usermodel> userlist = [];
 
-class _HiredEmployeeDashboardState extends State<HiredEmployeeDashboard> {
+class _HodDashboardState extends State<HodDashboard> {
   @override
   void initState() {
     super.initState();
@@ -79,44 +79,44 @@ class _HiredEmployeeDashboardState extends State<HiredEmployeeDashboard> {
                   );
                 },
               ),
-              ListTile(
-                leading: const Icon(Icons.done),
-                title: const Text('Attendance'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          EmployeeAttendanceReport(uid: widget.uid),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.assignment),
-                title: const Text('Leaves'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          EmployeeLeaveApplication(uid: widget.uid),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.request_quote),
-                title: const Text('Leave Request'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EmployeeApplyLeave(uid: widget.uid),
-                    ),
-                  );
-                },
-              ),
+              // ListTile(
+              //   leading: const Icon(Icons.done),
+              //   title: const Text('Attendance'),
+              //   onTap: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) =>
+              //             EmployeeAttendanceReport(uid: widget.uid),
+              //       ),
+              //     );
+              //   },
+              // ),
+              // ListTile(
+              //   leading: const Icon(Icons.assignment),
+              //   title: const Text('Leaves'),
+              //   onTap: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) =>
+              //             EmployeeLeaveApplication(uid: widget.uid),
+              //       ),
+              //     );
+              //   },
+              // ),
+              // ListTile(
+              //   leading: const Icon(Icons.request_quote),
+              //   title: const Text('Leave Request'),
+              //   onTap: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => EmployeeApplyLeave(uid: widget.uid),
+              //       ),
+              //     );
+              //   },
+              // ),
               // ListTile(
               //   leading: const Icon(Icons.group),
               //   title: const Text('Committee'),
@@ -130,18 +130,18 @@ class _HiredEmployeeDashboardState extends State<HiredEmployeeDashboard> {
               //     );
               //   },
               // ),
-              ListTile(
-                leading: const Icon(Icons.settings),
-                title: const Text('Setting'),
-                onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => ApplicantApplyApplications(),
-                  //   ),
-                  // );
-                },
-              ),
+              // ListTile(
+              //   leading: const Icon(Icons.settings),
+              //   title: const Text('Setting'),
+              //   onTap: () {
+              //     // Navigator.push(
+              //     //   context,
+              //     //   MaterialPageRoute(
+              //     //     builder: (context) => ApplicantApplyApplications(),
+              //     //   ),
+              //     // );
+              //   },
+              // ),
               ListTile(
                 leading: const Icon(Icons.logout),
                 title: const Text(

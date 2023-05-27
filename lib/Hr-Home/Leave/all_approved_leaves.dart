@@ -1,38 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:hrm_final_project/Hr-Home/Leave/all_approved_leaves.dart';
+import 'package:hrm_final_project/Hr-Home/Leave/all_leave_applications.dart';
 import 'package:hrm_final_project/Hr-Home/Leave/all_pending_leaves.dart';
 import 'package:hrm_final_project/Hr-Home/Leave/all_rejected_leaves.dart';
-import 'package:hrm_final_project/Hr-Home/Leave/leave_detail_action.dart';
 import 'package:hrm_final_project/Models/leave_and_user_model.dart';
 import 'package:hrm_final_project/uri.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
-class AllLeaveApplications extends StatefulWidget {
-  const AllLeaveApplications({
+class AllAprovedLeave extends StatefulWidget {
+  AllAprovedLeave({
     super.key,
   });
 
   @override
-  State<AllLeaveApplications> createState() => _AllLeaveApplicationsState();
+  State<AllAprovedLeave> createState() => _AllAprovedLeaveState();
 }
 
-class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
+class _AllAprovedLeaveState extends State<AllAprovedLeave> {
   List<Leavewithusermodel> laveapplicationlist = [];
+  String _formatDate(DateTime date) {
+    //ya date ko sai sa show karwanay ka liya bnaya ha like is format ma show hogi date
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
 
   // ignore: unused_field
   late Widget _widget;
   @override
   void initState() {
     super.initState();
-    _widget = AllLeaveApplications();
+    _widget = AllAprovedLeave();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Leave Applications"),
+          title: Text("Your Leave Applications"),
           centerTitle: true,
         ),
         body: FutureBuilder(
@@ -53,17 +57,18 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
                                     builder: (context) => AllPendingLeave()));
                             // button press code here
                           },
-                          child: Text('pending'),
+                          child: Text('Pending'),
                         ),
                         ElevatedButton(
                           onPressed: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => AllAprovedLeave()));
+                                    builder: (context) =>
+                                        AllLeaveApplications()));
                             // button press code here
                           },
-                          child: Text('Approved'),
+                          child: Text('All'),
                         ),
                         ElevatedButton(
                           onPressed: () {
@@ -73,7 +78,7 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
                                     builder: (context) => AllRejectedLeaves()));
                             // button press code here
                           },
-                          child: const Text('Rejected'),
+                          child: Text('Rejected'),
                         ),
                       ],
                     ),
@@ -119,36 +124,6 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
                                       //       ]),
                                       // ),
                                       // Text("First Name: ${userlist[index].fname}"),
-
-                                      const SizedBox(height: 8),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            left: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.1),
-                                        child: RichText(
-                                          text: TextSpan(
-                                              style:
-                                                  DefaultTextStyle.of(context)
-                                                      .style,
-                                              children: [
-                                                const TextSpan(
-                                                  text: "Applicant Name :    ",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text:
-                                                      "${laveapplicationlist[index].fname} ${laveapplicationlist[index].lname} ",
-                                                  style: const TextStyle(
-                                                    fontStyle: FontStyle.italic,
-                                                  ),
-                                                ),
-                                              ]),
-                                        ),
-                                      ),
                                       const SizedBox(height: 4),
                                       Padding(
                                         padding: EdgeInsets.only(
@@ -179,53 +154,78 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
                                               ]),
                                         ),
                                       ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-
-                                      Center(
-                                        child: SizedBox(
-                                          width: 200,
-                                          child: ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            LeaveDetailPlusAction(
-                                                              uid:
-                                                                  laveapplicationlist[
-                                                                          index]
-                                                                      .uid,
-                                                              reson:
-                                                                  laveapplicationlist[
-                                                                          index]
-                                                                      .reason,
-                                                              leavetype:
-                                                                  laveapplicationlist[
-                                                                          index]
-                                                                      .leavetype,
-                                                              sdate:
-                                                                  laveapplicationlist[
-                                                                          index]
-                                                                      .startdate,
-                                                              edate:
-                                                                  laveapplicationlist[
-                                                                          index]
-                                                                      .enddate,
-                                                              apdate:
-                                                                  laveapplicationlist[
-                                                                          index]
-                                                                      .applydate,
-                                                              leavid:
-                                                                  laveapplicationlist[
-                                                                          index]
-                                                                      .leaveappid,
-                                                            )));
-                                              },
-                                              child: Text("Detail")),
+                                      const SizedBox(height: 8),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.1),
+                                        child: RichText(
+                                          text: TextSpan(
+                                              style:
+                                                  DefaultTextStyle.of(context)
+                                                      .style,
+                                              children: [
+                                                const TextSpan(
+                                                  text: "Apply Date :    ",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: laveapplicationlist[
+                                                                  index]
+                                                              .applydate ==
+                                                          null
+                                                      ? 'No Date Provided'
+                                                      : _formatDate(
+                                                          DateTime.parse(
+                                                              laveapplicationlist[
+                                                                      index]
+                                                                  .applydate
+                                                                  .toString())),
+                                                  style: const TextStyle(
+                                                    fontStyle: FontStyle.italic,
+                                                  ),
+                                                ),
+                                              ]),
                                         ),
-                                      )
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.1),
+                                        child: RichText(
+                                          text: TextSpan(
+                                              style:
+                                                  DefaultTextStyle.of(context)
+                                                      .style,
+                                              children: [
+                                                const TextSpan(
+                                                  text: "Status :    ",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      "${laveapplicationlist[index].status} ",
+                                                  style: const TextStyle(
+                                                    fontStyle: FontStyle.italic,
+                                                  ),
+                                                ),
+                                              ]),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+
+                                      const SizedBox(height: 4),
+
+                                      const SizedBox(height: 4),
                                     ],
                                   ),
                                 ),
@@ -244,7 +244,8 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
   Future<List<Leavewithusermodel>> fetchleaveapplication() async {
     //response keyword khud sa bnaya ha
     final response = await http.get(Uri.parse(
-        'http://$ip/HrmPractise02/api/Leave/NewAllLeaveapplicationGet')); // is ma aik variable bnaya ha response ka name sa or phir get method ka through api ko hit kar rahay hn is ka data aik data variable ma store karway ga
+        'http://$ip/HrmPractise02/api/Leave/AllNewApprovedLeaveGet')); // is ma aik variable bnaya ha response ka name sa or phir get method ka through api ko hit kar rahay hn is ka data aik data variable ma store karway ga
+    // ignore: non_constant_identifier_names
     var Data = jsonDecode(response.body
         .toString()); // decode kar ka data variable ma store kar rahay hn
     if (response.statusCode == 200) {

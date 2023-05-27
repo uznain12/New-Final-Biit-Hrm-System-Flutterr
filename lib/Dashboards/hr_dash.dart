@@ -5,6 +5,7 @@ import 'package:hrm_final_project/Guard-Home/all_employees_attendance.dart';
 import 'package:hrm_final_project/Hr-Home/Job/job_applications.dart';
 import 'package:hrm_final_project/Hr-Home/Job/job_post.dart';
 import 'package:hrm_final_project/Hr-Home/Leave/all_leave_applications.dart';
+import 'package:hrm_final_project/Hr-Home/Leave/all_pending_leaves.dart';
 import 'package:hrm_final_project/Hr-Home/New-Committe/committe_mian.dart';
 import 'package:hrm_final_project/Login-Signup/login.dart';
 import 'package:hrm_final_project/Models/user_model.dart';
@@ -251,10 +252,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   ),
                   InkWell(
                     onTap: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => AllLeaveApplications()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AllPendingLeave()));
                     },
                     child: Container(
                       height: 150,

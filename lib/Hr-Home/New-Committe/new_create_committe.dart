@@ -8,6 +8,7 @@ import 'dart:convert';
 
 import '../../Models/committee_with_member_for_employ_Model2.dart';
 
+// ignore: must_be_immutable
 class NewCreateCommitte extends StatefulWidget {
   int? uid;
   int? comid;
@@ -21,6 +22,14 @@ class NewCreateCommitte extends StatefulWidget {
 class _NewCreateCommitteState extends State<NewCreateCommitte> {
   List<CommitteModel> committelist = [];
   List<Foremployeecommitteewithmember> memberlist = [];
+  // ignore: unused_field
+  late Future<List<CommitteModel>> _futureCommitteeList;
+
+  @override
+  void initState() {
+    super.initState();
+    _futureCommitteeList = fetchCommitte(widget.uid!);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +37,16 @@ class _NewCreateCommitteState extends State<NewCreateCommitte> {
         appBar: AppBar(
           title: const Text("Committe Details"),
           centerTitle: true,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () {
+                setState(() {
+                  _futureCommitteeList = fetchCommitte(widget.uid!);
+                });
+              },
+            ),
+          ],
         ),
         body: Stack(
           children: [
@@ -38,197 +57,29 @@ class _NewCreateCommitteState extends State<NewCreateCommitte> {
               child: Column(
                 children: [
                   Expanded(
-                    child: FutureBuilder(
-                        future: fetchCommitte(widget.comid!),
-                        builder: (context, snapshot) {
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.none:
-                              return Text('Press button to start.');
-                            case ConnectionState.active:
-                            case ConnectionState.waiting:
-                              return Center(child: CircularProgressIndicator());
-                            case ConnectionState.done:
-                              if (snapshot.hasError)
-                                return Text('Error: ${snapshot.error}');
-                              if (!snapshot.hasData) return Text('No data');
-                              return ListView.builder(
-                                  itemCount: committelist.length,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: EdgeInsets.only(
-                                          top: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.02,
-                                          left: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.02,
-                                          right: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.02),
-                                      child: Container(
-                                          height: 120,
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey.shade100,
-                                              border: Border.all(
-                                                  width: 2,
-                                                  color: Colors.black)),
-                                          child: Row(
-                                            children: [
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const SizedBox(
-                                                    height: 4,
-                                                  ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.2),
-                                                    child: Text(
-                                                      " ${committelist[index].committeeTitle}",
-                                                      style: const TextStyle(
-                                                          fontSize: 25,
-                                                          fontWeight:
-                                                              FontWeight.w900),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 5),
-                                                    child: RichText(
-                                                      text: TextSpan(
-                                                          style: DefaultTextStyle
-                                                                  .of(context)
-                                                              .style,
-                                                          children: [
-                                                            const TextSpan(
-                                                              text:
-                                                                  "Committee Head: ",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 18),
-                                                            ),
-                                                            TextSpan(
-                                                              text:
-                                                                  "${committelist[index].user!.fname}  ${committelist[index].user!.lname}",
-                                                              style: const TextStyle(
-                                                                  fontStyle:
-                                                                      FontStyle
-                                                                          .italic,
-                                                                  fontSize: 18),
-                                                            ),
-                                                          ]),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.07),
-                                                    child: Row(
-                                                      children: [
-                                                        const Text(
-                                                          "Add Committee Members",
-                                                          style: TextStyle(
-                                                              fontSize: 20,
-                                                              color:
-                                                                  Colors.blue),
-                                                        ),
-                                                        SizedBox(width: 10),
-                                                        Padding(
-                                                          padding:
-                                                              EdgeInsets.only(),
-                                                          child: IconButton(
-                                                              onPressed: () {
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder: (context) =>
-                                                                            AllEmployeesForCommiitte(
-                                                                              committeid: committelist[index].committeeId,
-                                                                              uid: widget.uid,
-                                                                            )));
-                                                              },
-                                                              icon: const Icon(
-                                                                Icons.add,
-                                                                size: 40,
-                                                                color: Colors
-                                                                    .black,
-                                                              )),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          )),
-                                    );
-                                  });
-                            default:
-                              return Text('Unexpected error');
-                          }
-                        }),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.23),
-              child: Container(
-                // decoration: BoxDecoration(color: Colors.grey.shade800),
-                child: Column(
-                  children: [
-                    Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        setState(() {
+                          _futureCommitteeList = fetchCommitte(widget.uid!);
+                        });
+                      },
                       child: FutureBuilder(
                           future: fetchCommitte(widget.comid!),
                           builder: (context, snapshot) {
                             switch (snapshot.connectionState) {
                               case ConnectionState.none:
-                                return Text('Press button to start.');
+                                return const Text('Press button to start.');
                               case ConnectionState.active:
                               case ConnectionState.waiting:
-                                return const Center(
+                                return Center(
                                     child: CircularProgressIndicator());
                               case ConnectionState.done:
-                                if (snapshot.hasError) {
+                                if (snapshot.hasError)
                                   return Text('Error: ${snapshot.error}');
-                                }
                                 if (!snapshot.hasData) return Text('No data');
-                                return GridView.builder(
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisSpacing: 0,
-                                      crossAxisSpacing: 0,
-                                      childAspectRatio: 3 / 3,
-                                    ),
-                                    itemCount: committelist
-                                        .expand((c) => c.committeeMembers!)
-                                        .length,
+                                return ListView.builder(
+                                    itemCount: committelist.length,
                                     itemBuilder: (context, index) {
-                                      var member = committelist
-                                          .expand((c) => c.committeeMembers!)
-                                          .toList()[index];
-
                                       return Padding(
                                         padding: EdgeInsets.only(
                                             top: MediaQuery.of(context)
@@ -244,156 +95,346 @@ class _NewCreateCommitteState extends State<NewCreateCommitte> {
                                                     .width *
                                                 0.02),
                                         child: Container(
-                                            height: 350,
+                                            height: 120,
                                             decoration: BoxDecoration(
-                                              color: Colors.grey.shade300,
-                                              border: Border.all(
-                                                  width: 2,
-                                                  color: Colors.black),
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                            ),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                                color: Colors.grey.shade100,
+                                                border: Border.all(
+                                                    width: 2,
+                                                    color: Colors.black)),
+                                            child: Row(
                                               children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 130),
-                                                  child: Stack(
-                                                    children: [
-                                                      IconButton(
-                                                          onPressed: () {
-                                                            showDialog(
-                                                              context: context,
-                                                              builder:
-                                                                  (context) =>
-                                                                      AlertDialog(
-                                                                title: const Text(
-                                                                    'Remove member?'),
-                                                                content: const Text(
-                                                                    'Are you sure you want to Remove This Member'),
-                                                                actions: [
-                                                                  TextButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    },
-                                                                    child: Text(
-                                                                        'Cancel'),
-                                                                  ),
-                                                                  TextButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                      _deletecommittemember(
-                                                                          member
-                                                                              .committeeImemberId!);
-                                                                    },
-                                                                    child: Text(
-                                                                        'Remove'),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            );
-                                                          },
-                                                          icon: Icon(
-                                                            Icons.close,
-                                                            color: Colors.red,
-                                                          ))
-                                                    ],
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.07,
-                                                      top:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.00),
-                                                  child: Container(
-                                                    height: 90,
-                                                    child: (member.user!
-                                                                    .image !=
-                                                                null &&
-                                                            member.user!.image!
-                                                                .trim()
-                                                                .isNotEmpty)
-                                                        ? ClipOval(
-                                                            child: Image(
-                                                              fit: BoxFit.cover,
-                                                              height: 100,
-                                                              width: 100,
-                                                              image: NetworkImage(
-                                                                  imagepath +
-                                                                      member
-                                                                          .user!
-                                                                          .image
-                                                                          .toString()),
-                                                            ),
-                                                          )
-                                                        : const Icon(
-                                                            Icons.person,
-                                                            size: 100),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 8,
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.06),
-                                                  child: RichText(
-                                                    text: TextSpan(
-                                                      style:
-                                                          DefaultTextStyle.of(
-                                                                  context)
-                                                              .style,
-                                                      children: [
-                                                        const TextSpan(
-                                                          text: "",
-                                                          style: TextStyle(
-                                                              fontSize: 17,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w900),
-                                                        ),
-                                                        TextSpan(
-                                                          text:
-                                                              "${member.user!.fname} ${member.user!.lname} ",
-                                                          style:
-                                                              const TextStyle(
-                                                            fontStyle: FontStyle
-                                                                .italic,
-                                                          ),
-                                                        ),
-                                                      ],
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const SizedBox(
+                                                      height: 4,
                                                     ),
-                                                  ),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              0.2),
+                                                      child: Text(
+                                                        " ${committelist[index].committeeTitle}",
+                                                        style: const TextStyle(
+                                                            fontSize: 25,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w900),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 5),
+                                                      child: RichText(
+                                                        text: TextSpan(
+                                                            style: DefaultTextStyle
+                                                                    .of(context)
+                                                                .style,
+                                                            children: [
+                                                              const TextSpan(
+                                                                text:
+                                                                    "Committee Head: ",
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        18),
+                                                              ),
+                                                              TextSpan(
+                                                                text:
+                                                                    "${committelist[index].user!.fname}  ${committelist[index].user!.lname}",
+                                                                style: const TextStyle(
+                                                                    fontStyle:
+                                                                        FontStyle
+                                                                            .italic,
+                                                                    fontSize:
+                                                                        18),
+                                                              ),
+                                                            ]),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              0.07),
+                                                      child: Row(
+                                                        children: [
+                                                          const Text(
+                                                            "Add Committee Members",
+                                                            style: TextStyle(
+                                                                fontSize: 20,
+                                                                color: Colors
+                                                                    .blue),
+                                                          ),
+                                                          SizedBox(width: 10),
+                                                          Padding(
+                                                            padding: EdgeInsets
+                                                                .only(),
+                                                            child: IconButton(
+                                                                onPressed: () {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => AllEmployeesForCommiitte(
+                                                                                committeid: committelist[index].committeeId,
+                                                                                uid: widget.uid,
+                                                                              )));
+                                                                },
+                                                                icon:
+                                                                    const Icon(
+                                                                  Icons.add,
+                                                                  size: 40,
+                                                                  color: Colors
+                                                                      .black,
+                                                                )),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ],
                                             )),
                                       );
                                     });
-
                               default:
                                 return Text('Unexpected error');
                             }
                           }),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.23),
+              child: Container(
+                // decoration: BoxDecoration(color: Colors.grey.shade800),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          setState(() {
+                            _futureCommitteeList = fetchCommitte(widget.uid!);
+                          });
+                        },
+                        child: FutureBuilder(
+                            future: fetchCommitte(widget.comid!),
+                            builder: (context, snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                  return Text('Press button to start.');
+                                case ConnectionState.active:
+                                case ConnectionState.waiting:
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                case ConnectionState.done:
+                                  if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  }
+                                  if (!snapshot.hasData) return Text('No data');
+                                  return GridView.builder(
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 0,
+                                        crossAxisSpacing: 0,
+                                        childAspectRatio: 3 / 3.2,
+                                      ),
+                                      itemCount: committelist
+                                          .expand((c) => c.committeeMembers!)
+                                          .length,
+                                      itemBuilder: (context, index) {
+                                        var member = committelist
+                                            .expand((c) => c.committeeMembers!)
+                                            .toList()[index];
+
+                                        return Padding(
+                                          padding: EdgeInsets.only(
+                                              top: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.02,
+                                              left: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.02,
+                                              right: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.02),
+                                          child: Container(
+                                              height: 350,
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey.shade300,
+                                                border: Border.all(
+                                                    width: 2,
+                                                    color: Colors.black),
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 130),
+                                                    child: Stack(
+                                                      children: [
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) =>
+                                                                        AlertDialog(
+                                                                  title: const Text(
+                                                                      'Remove member?'),
+                                                                  content:
+                                                                      const Text(
+                                                                          'Are you sure you want to Remove This Member'),
+                                                                  actions: [
+                                                                    TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      child: Text(
+                                                                          'Cancel'),
+                                                                    ),
+                                                                    TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                        _deletecommittemember(
+                                                                            member.committeeImemberId!);
+                                                                      },
+                                                                      child: Text(
+                                                                          'Remove'),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            },
+                                                            icon: Icon(
+                                                              Icons.close,
+                                                              color: Colors.red,
+                                                            ))
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.07,
+                                                        top: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.00),
+                                                    child: Container(
+                                                      height: 90,
+                                                      child: (member.user!
+                                                                      .image !=
+                                                                  null &&
+                                                              member
+                                                                  .user!.image!
+                                                                  .trim()
+                                                                  .isNotEmpty)
+                                                          ? ClipOval(
+                                                              child: Image(
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                height: 100,
+                                                                width: 100,
+                                                                image: NetworkImage(
+                                                                    imagepath +
+                                                                        member
+                                                                            .user!
+                                                                            .image
+                                                                            .toString()),
+                                                              ),
+                                                            )
+                                                          : const Icon(
+                                                              Icons.person,
+                                                              size: 100),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 8,
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.06),
+                                                    child: RichText(
+                                                      text: TextSpan(
+                                                        style:
+                                                            DefaultTextStyle.of(
+                                                                    context)
+                                                                .style,
+                                                        children: [
+                                                          const TextSpan(
+                                                            text: "",
+                                                            style: TextStyle(
+                                                                fontSize: 17,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w900),
+                                                          ),
+                                                          TextSpan(
+                                                            text:
+                                                                "${member.user!.fname} ${member.user!.lname} ",
+                                                            style:
+                                                                const TextStyle(
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .italic,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )),
+                                        );
+                                      });
+
+                                default:
+                                  return Text('Unexpected error');
+                              }
+                            }),
+                      ),
                     ),
                   ],
                 ),

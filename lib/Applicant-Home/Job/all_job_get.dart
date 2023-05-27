@@ -126,6 +126,22 @@ class _ApplicantApplyJobState extends State<ApplicantApplyJob> {
               ),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
+                  List<Jobmodel> filteredJobs = [];
+                  if (_searchQuery.isNotEmpty) {
+                    for (final user in joblist) {
+                      if (((user.title.toLowerCase() ?? '') +
+                              ' ' +
+                              (user.location.toLowerCase() ?? '') +
+                              ' ' +
+                              (user.salary..toString().toLowerCase()))
+                          .contains(_searchQuery.toLowerCase())) {
+                        filteredJobs.add(user);
+                      }
+                    }
+                  } else {
+                    filteredJobs = List.from(joblist);
+                  }
+
                   return Column(
                     children: [
                       //Drop down filter list
@@ -402,15 +418,8 @@ class _ApplicantApplyJobState extends State<ApplicantApplyJob> {
                                   0, // Decreased from MediaQuery.of(context).size.width * 0.09
                               childAspectRatio: 3.5 / 1,
                             ),
-                            itemCount: joblist.length,
+                            itemCount: filteredJobs.length,
                             itemBuilder: (context, index) {
-                              if (_searchQuery.isNotEmpty &&
-                                  !joblist[index]
-                                      .title
-                                      .toLowerCase()
-                                      .contains(_searchQuery.toLowerCase())) {
-                                return const SizedBox.shrink();
-                              }
                               // bool displayJob = true;
                               // if (_filters.any((filter) => filter.isSelected)) {
                               //   displayJob = false;
@@ -465,7 +474,8 @@ class _ApplicantApplyJobState extends State<ApplicantApplyJob> {
                                             builder: (context) =>
                                                 JobDetailScreen(
                                                     uid: widget.uid,
-                                                    jid: joblist[index].jid)));
+                                                    jid: filteredJobs[index]
+                                                        .jid)));
                                   }),
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -511,7 +521,7 @@ class _ApplicantApplyJobState extends State<ApplicantApplyJob> {
                                               padding: const EdgeInsets.only(
                                                   left: 20),
                                               child: Text(
-                                                " ${joblist[index].title}          (${joblist[index].noofvacancie.toString()})",
+                                                " ${filteredJobs[index].title}          (${filteredJobs[index].noofvacancie.toString()})",
                                                 style: const TextStyle(
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.w900,
@@ -523,7 +533,7 @@ class _ApplicantApplyJobState extends State<ApplicantApplyJob> {
                                               padding: const EdgeInsets.only(
                                                   left: 27),
                                               child: Text(
-                                                "${joblist[index].salary.toString()} ",
+                                                "${filteredJobs[index].salary.toString()} ",
                                                 style: const TextStyle(
                                                   fontSize: 15,
                                                 ),
@@ -534,7 +544,7 @@ class _ApplicantApplyJobState extends State<ApplicantApplyJob> {
                                               padding: const EdgeInsets.only(
                                                   left: 27),
                                               child: Text(
-                                                "${joblist[index].location}",
+                                                "${filteredJobs[index].location}",
                                                 style: const TextStyle(
                                                   fontSize: 17,
                                                   fontWeight: FontWeight.w500,
@@ -554,7 +564,7 @@ class _ApplicantApplyJobState extends State<ApplicantApplyJob> {
                                                         builder: (context) =>
                                                             JobDetailScreen(
                                                                 uid: widget.uid,
-                                                                jid: joblist[
+                                                                jid: filteredJobs[
                                                                         index]
                                                                     .jid)));
                                               },

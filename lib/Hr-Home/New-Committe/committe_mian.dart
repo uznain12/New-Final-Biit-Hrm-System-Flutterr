@@ -20,6 +20,13 @@ class MainCommittePage extends StatefulWidget {
 
 class _MainCommittePageState extends State<MainCommittePage> {
   List<CommitteModel> committelist = [];
+  late Future<List<CommitteModel>> _futureCommitteeList;
+
+  @override
+  void initState() {
+    super.initState();
+    _futureCommitteeList = getcommitte();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,135 +34,155 @@ class _MainCommittePageState extends State<MainCommittePage> {
         appBar: AppBar(
           title: Text("Committe Home"),
           centerTitle: true,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () {
+                setState(() {
+                  _futureCommitteeList = getcommitte();
+                });
+              },
+            ),
+          ],
         ),
         body: Stack(
           children: [
-            FutureBuilder(
-                future: getcommitte(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                        itemCount: committelist.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.only(
-                                top: MediaQuery.of(context).size.height * 0.02,
-                                left: MediaQuery.of(context).size.width * 0.02,
-                                right:
-                                    MediaQuery.of(context).size.width * 0.02),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => NewCreateCommitte(
-                                              uid: widget.uid,
-                                              comid: committelist[index]
-                                                  .committeeId,
-                                            )));
-                              },
-                              child: Container(
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey.shade300,
-                                      border: Border.all(
-                                          width: 2, color: Colors.black)),
-                                  child: Row(
-                                    children: [
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const SizedBox(
-                                            height: 4,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 18, left: 5),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                  style: DefaultTextStyle.of(
-                                                          context)
-                                                      .style,
-                                                  children: [
-                                                    const TextSpan(
-                                                      text: "Committee :  ",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 20),
-                                                    ),
-                                                    TextSpan(
-                                                      text:
-                                                          "${committelist[index].committeeTitle}",
-                                                      style: const TextStyle(
-                                                          fontStyle:
-                                                              FontStyle.italic,
-                                                          fontSize: 18),
-                                                    ),
-                                                  ]),
+            RefreshIndicator(
+              onRefresh: () async {
+                setState(() {
+                  _futureCommitteeList = getcommitte();
+                });
+              },
+              child: FutureBuilder(
+                  future: getcommitte(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                          itemCount: committelist.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                  top:
+                                      MediaQuery.of(context).size.height * 0.02,
+                                  left:
+                                      MediaQuery.of(context).size.width * 0.02,
+                                  right:
+                                      MediaQuery.of(context).size.width * 0.02),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              NewCreateCommitte(
+                                                uid: widget.uid,
+                                                comid: committelist[index]
+                                                    .committeeId,
+                                              )));
+                                },
+                                child: Container(
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey.shade300,
+                                        border: Border.all(
+                                            width: 2, color: Colors.black)),
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(
+                                              height: 4,
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      Spacer(),
-                                      Column(
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(top: 8),
-                                            child: IconButton(
-                                              onPressed: () {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (context) =>
-                                                      AlertDialog(
-                                                    title: const Text(
-                                                        'Delete Committee?'),
-                                                    content: const Text(
-                                                        'Are you sure you want to delete this Committee?'),
-                                                    actions: [
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                        child: Text('Cancel'),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 18, left: 5),
+                                              child: RichText(
+                                                text: TextSpan(
+                                                    style: DefaultTextStyle.of(
+                                                            context)
+                                                        .style,
+                                                    children: [
+                                                      const TextSpan(
+                                                        text: "Committee :  ",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 20),
                                                       ),
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                          _deletecommitte(
-                                                              committelist[
-                                                                      index]
-                                                                  .committeeId!);
-                                                        },
-                                                        child: Text('Delete'),
+                                                      TextSpan(
+                                                        text:
+                                                            "${committelist[index].committeeTitle}",
+                                                        style: const TextStyle(
+                                                            fontStyle: FontStyle
+                                                                .italic,
+                                                            fontSize: 18),
                                                       ),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                              icon: const Icon(
-                                                Icons.delete,
-                                                size: 30,
-                                                color: Colors.redAccent,
+                                                    ]),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  )),
-                            ),
-                          );
-                        });
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                }),
+                                          ],
+                                        ),
+                                        Spacer(),
+                                        Column(
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(top: 8),
+                                              child: IconButton(
+                                                onPressed: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        AlertDialog(
+                                                      title: const Text(
+                                                          'Delete Committee?'),
+                                                      content: const Text(
+                                                          'Are you sure you want to delete this Committee?'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text('Cancel'),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                            _deletecommitte(
+                                                                committelist[
+                                                                        index]
+                                                                    .committeeId!);
+                                                          },
+                                                          child: Text('Delete'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                                icon: const Icon(
+                                                  Icons.delete,
+                                                  size: 30,
+                                                  color: Colors.redAccent,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    )),
+                              ),
+                            );
+                          });
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  }),
+            ),
             Padding(
               padding: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.72,

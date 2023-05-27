@@ -1,38 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:hrm_final_project/Hr-Home/Leave/all_approved_leaves.dart';
-import 'package:hrm_final_project/Hr-Home/Leave/all_pending_leaves.dart';
+import 'package:hrm_final_project/Hr-Home/Leave/all_leave_applications.dart';
 import 'package:hrm_final_project/Hr-Home/Leave/all_rejected_leaves.dart';
 import 'package:hrm_final_project/Hr-Home/Leave/leave_detail_action.dart';
 import 'package:hrm_final_project/Models/leave_and_user_model.dart';
 import 'package:hrm_final_project/uri.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
-class AllLeaveApplications extends StatefulWidget {
-  const AllLeaveApplications({
+class AllPendingLeave extends StatefulWidget {
+  const AllPendingLeave({
     super.key,
   });
 
   @override
-  State<AllLeaveApplications> createState() => _AllLeaveApplicationsState();
+  State<AllPendingLeave> createState() => _AllPendingLeaveState();
 }
 
-class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
+class _AllPendingLeaveState extends State<AllPendingLeave> {
   List<Leavewithusermodel> laveapplicationlist = [];
+  String _formatDate(DateTime date) {
+    //ya date ko sai sa show karwanay ka liya bnaya ha like is format ma show hogi date
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
 
-  // ignore: unused_field
-  late Widget _widget;
   @override
   void initState() {
     super.initState();
-    _widget = AllLeaveApplications();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Leave Applications"),
+          title: const Text("Pending Applications"),
           centerTitle: true,
         ),
         body: FutureBuilder(
@@ -50,10 +52,11 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => AllPendingLeave()));
+                                    builder: (context) =>
+                                        AllLeaveApplications()));
                             // button press code here
                           },
-                          child: Text('pending'),
+                          child: const Text('All'),
                         ),
                         ElevatedButton(
                           onPressed: () {
@@ -63,7 +66,7 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
                                     builder: (context) => AllAprovedLeave()));
                             // button press code here
                           },
-                          child: Text('Approved'),
+                          child: const Text('Approved'),
                         ),
                         ElevatedButton(
                           onPressed: () {
@@ -84,9 +87,9 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
                             return Padding(
                               padding: EdgeInsets.only(
                                   top: MediaQuery.of(context).size.height *
-                                      0.03),
+                                      0.01),
                               child: Container(
-                                height: 150,
+                                height: 200,
                                 decoration: BoxDecoration(
                                     color: Colors.grey.shade300,
                                     border: Border.all(
@@ -100,27 +103,7 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      // RichText(
-                                      //   text: TextSpan(
-                                      //       style: DefaultTextStyle.of(context).style,
-                                      //       children: [
-                                      //         const TextSpan(
-                                      //           text: "First Name: ",
-                                      //           style: TextStyle(
-                                      //             fontWeight: FontWeight.bold,
-                                      //           ),
-                                      //         ),
-                                      //         TextSpan(
-                                      //           text: "${userlist[index].fname}",
-                                      //           style: const TextStyle(
-                                      //             fontStyle: FontStyle.italic,
-                                      //           ),
-                                      //         ),
-                                      //       ]),
-                                      // ),
-                                      // Text("First Name: ${userlist[index].fname}"),
-
-                                      const SizedBox(height: 8),
+                                      const SizedBox(height: 4),
                                       Padding(
                                         padding: EdgeInsets.only(
                                             left: MediaQuery.of(context)
@@ -149,7 +132,7 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
                                               ]),
                                         ),
                                       ),
-                                      const SizedBox(height: 4),
+                                      const SizedBox(height: 8),
                                       Padding(
                                         padding: EdgeInsets.only(
                                             left: MediaQuery.of(context)
@@ -164,13 +147,14 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
                                               children: [
                                                 const TextSpan(
                                                   text:
-                                                      "Leave Type:                 ",
+                                                      "Leave Type:              ",
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
                                                 TextSpan(
                                                   text:
+                                                      // ignore: unnecessary_string_interpolations
                                                       "${laveapplicationlist[index].leavetype}",
                                                   style: const TextStyle(
                                                     fontStyle: FontStyle.italic,
@@ -179,10 +163,73 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
                                               ]),
                                         ),
                                       ),
-                                      SizedBox(
-                                        height: 10,
+                                      const SizedBox(height: 8),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.1),
+                                        child: RichText(
+                                          text: TextSpan(
+                                              style:
+                                                  DefaultTextStyle.of(context)
+                                                      .style,
+                                              children: [
+                                                const TextSpan(
+                                                  text: "Apply Date :    ",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: laveapplicationlist[
+                                                                  index]
+                                                              .applydate ==
+                                                          null
+                                                      ? 'No Date Provided'
+                                                      : _formatDate(
+                                                          DateTime.parse(
+                                                              laveapplicationlist[
+                                                                      index]
+                                                                  .applydate
+                                                                  .toString())),
+                                                  style: const TextStyle(
+                                                    fontStyle: FontStyle.italic,
+                                                  ),
+                                                ),
+                                              ]),
+                                        ),
                                       ),
-
+                                      const SizedBox(height: 4),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.1),
+                                        child: RichText(
+                                          text: TextSpan(
+                                              style:
+                                                  DefaultTextStyle.of(context)
+                                                      .style,
+                                              children: [
+                                                const TextSpan(
+                                                  text: "Status :    ",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      "${laveapplicationlist[index].status} ",
+                                                  style: const TextStyle(
+                                                    fontStyle: FontStyle.italic,
+                                                  ),
+                                                ),
+                                              ]),
+                                        ),
+                                      ),
                                       Center(
                                         child: SizedBox(
                                           width: 200,
@@ -236,7 +283,7 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
                   ],
                 );
               } else {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
             }));
   }
@@ -244,7 +291,8 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
   Future<List<Leavewithusermodel>> fetchleaveapplication() async {
     //response keyword khud sa bnaya ha
     final response = await http.get(Uri.parse(
-        'http://$ip/HrmPractise02/api/Leave/NewAllLeaveapplicationGet')); // is ma aik variable bnaya ha response ka name sa or phir get method ka through api ko hit kar rahay hn is ka data aik data variable ma store karway ga
+        'http://$ip/HrmPractise02/api/Leave/AllNewPendingLeaveGet')); // is ma aik variable bnaya ha response ka name sa or phir get method ka through api ko hit kar rahay hn is ka data aik data variable ma store karway ga
+    // ignore: non_constant_identifier_names
     var Data = jsonDecode(response.body
         .toString()); // decode kar ka data variable ma store kar rahay hn
     if (response.statusCode == 200) {

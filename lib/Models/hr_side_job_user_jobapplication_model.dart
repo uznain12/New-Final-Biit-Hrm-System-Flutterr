@@ -40,6 +40,7 @@ class JobuserjobapplicationmodelDart {
   DateTime lastDateOfApply;
   String location;
   String description;
+  String jobstatus;
   int noofvacancie;
 
   JobuserjobapplicationmodelDart({
@@ -71,6 +72,7 @@ class JobuserjobapplicationmodelDart {
     required this.location,
     required this.description,
     required this.noofvacancie,
+    required this.jobstatus,
   });
 
   factory JobuserjobapplicationmodelDart.fromJson(Map<String, dynamic> json) =>
@@ -103,6 +105,7 @@ class JobuserjobapplicationmodelDart {
         location: json["Location"],
         description: json["Description"],
         noofvacancie: json["noofvacancie"],
+        jobstatus: json["jobstatus"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -136,5 +139,6 @@ class JobuserjobapplicationmodelDart {
         "Location": location,
         "Description": description,
         "noofvacancie": noofvacancie,
+        "jobstatus": jobstatus,
       };
 }

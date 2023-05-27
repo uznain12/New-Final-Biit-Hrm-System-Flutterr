@@ -25,6 +25,7 @@ class JobandJobapplicationmodel {
   DateTime lastDateOfApply;
   String jobLocation;
   String jobDescription;
+  String jobstatus;
   int noOfVacancies;
 
   JobandJobapplicationmodel({
@@ -43,6 +44,7 @@ class JobandJobapplicationmodel {
     required this.jobLocation,
     required this.jobDescription,
     required this.noOfVacancies,
+    required this.jobstatus,
   });
 
   factory JobandJobapplicationmodel.fromJson(Map<String, dynamic> json) =>
@@ -62,6 +64,7 @@ class JobandJobapplicationmodel {
         jobLocation: json["JobLocation"],
         jobDescription: json["JobDescription"],
         noOfVacancies: json["NoOfVacancies"],
+        jobstatus: json["jobstatus"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -81,5 +84,6 @@ class JobandJobapplicationmodel {
         "JobLocation": jobLocation,
         "JobDescription": jobDescription,
         "NoOfVacancies": noOfVacancies,
+        "jobstatus": jobstatus,
       };
 }

@@ -218,25 +218,6 @@ class _AllEmployeesForCommiitteState extends State<AllEmployeesForCommiitte> {
     }
   }
 
-  // Future<List<CommitteModel?>> getcommitte(id) async {
-  //   // Get the current user's UID.
-  //   final response = await http.get(
-  //       Uri.parse('http://$ip/HrmPractise02/api/Committee/CommitteeGet?comid=$id'));
-  //   var Data = jsonDecode(response.body.toString());
-
-  //   if (response.statusCode == 200) {
-  //     committelist.clear();
-  //     for (Map<String, dynamic> index in Data) {
-  //       committelist.add(CommitteModel.fromJson(index));
-  //     }
-  //   } else {
-  //     print(
-  //         'Error occurred: ${response.statusCode} - ${response.body}'); // print the error
-
-  //   }
-  //   return committelist;
-  // }
-
   Future<CommitteModel?> getcommitte(int id) async {
     final response = await http.get(Uri.parse(
         'http://$ip/HrmPractise02/api/Committee/CommitteeGet?comid=$id'));

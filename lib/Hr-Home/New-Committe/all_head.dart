@@ -20,7 +20,7 @@ List<Usermodel> userlistbyrole = [];
 class _AllHeadsForCommiitteState extends State<AllHeadsForCommiitte> {
   // New map to store the check-in/check-out status
 
-  String _searchQuery = ''; // User for search
+  // String _searchQuery = ''; // User for search
 
   @override
   Widget build(BuildContext context) {
@@ -38,35 +38,35 @@ class _AllHeadsForCommiitteState extends State<AllHeadsForCommiitte> {
                     image: AssetImage('images/background.jpg'),
                     fit: BoxFit.fill)),
           ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: TextField(
-              decoration: InputDecoration(
-                labelText: 'Search',
-                hintText: 'Enter Emplyee name',
-                prefixIcon: Icon(Icons.search),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(color: Colors.black, width: 1.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                ),
-                fillColor: Colors.white,
-                filled: true,
-              ),
-              onChanged: (value) {
-                setState(() {
-                  _searchQuery = value;
-                });
-              },
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.all(12.0),
+          //   child: TextField(
+          //     decoration: InputDecoration(
+          //       labelText: 'Search',
+          //       hintText: 'Enter Emplyee name',
+          //       prefixIcon: Icon(Icons.search),
+          //       enabledBorder: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(30.0),
+          //         borderSide: BorderSide(color: Colors.black, width: 1.0),
+          //       ),
+          //       focusedBorder: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(30.0),
+          //         borderSide: BorderSide(color: Colors.blue, width: 2.0),
+          //       ),
+          //       fillColor: Colors.white,
+          //       filled: true,
+          //     ),
+          //     onChanged: (value) {
+          //       setState(() {
+          //         _searchQuery = value;
+          //       });
+          //     },
+          //   ),
+          // ),
 
           // FutureBuilder to fetch data asynchronouslyr
           Padding(
-            padding: const EdgeInsets.only(top: 100, left: 10, right: 10),
+            padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
             child: Container(
               // decoration: BoxDecoration(color: Colors.black),
               child: FutureBuilder(
@@ -88,17 +88,17 @@ class _AllHeadsForCommiitteState extends State<AllHeadsForCommiitte> {
                             childAspectRatio: 3 / 2.5,
                           ),
                           itemBuilder: (context, index) {
-                            if (_searchQuery.isNotEmpty &&
-                                !((userlistbyrole[index].fname?.toLowerCase() ??
-                                            '') +
-                                        ' ' +
-                                        (userlistbyrole[index]
-                                                .lname
-                                                ?.toLowerCase() ??
-                                            ''))
-                                    .contains(_searchQuery.toLowerCase())) {
-                              return const SizedBox.shrink();
-                            }
+                            // if (_searchQuery.isNotEmpty &&
+                            //     !((userlistbyrole[index].fname?.toLowerCase() ??
+                            //                 '') +
+                            //             ' ' +
+                            //             (userlistbyrole[index]
+                            //                     .lname
+                            //                     ?.toLowerCase() ??
+                            //                 ''))
+                            //         .contains(_searchQuery.toLowerCase())) {
+                            //   return const SizedBox.shrink();
+                            // }
 
                             // Create a card for each employee
                             return InkWell(
@@ -188,7 +188,7 @@ class _AllHeadsForCommiitteState extends State<AllHeadsForCommiitte> {
   Future<List<Usermodel>> fetchcuserbyrole() async {
     try {
       final response = await http
-          .get(Uri.parse('http://$ip/HrmPractise02/api/User/UserbyroleGet'));
+          .get(Uri.parse('http://$ip/HrmPractise02/api/User/HodroleGet'));
       var Data = jsonDecode(response.body.toString());
       if (response.statusCode == 200) {
         userlistbyrole.clear();

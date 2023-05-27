@@ -10,7 +10,10 @@ class ApplicantJobDetail extends StatefulWidget {
   int? applicationid;
   int? memberid;
   ApplicantJobDetail(
-      {required this.uid, required this.applicationid, required this.memberid});
+      {super.key,
+      required this.uid,
+      required this.applicationid,
+      required this.memberid});
   // const ApplicantApplyJob({super.key});
 
   @override
@@ -636,6 +639,31 @@ class _ApplicantJobDetailState extends State<ApplicantJobDetail> {
                                                           .experiences[0]
                                                           .otherskill
                                                       : "Not provided",
+                                                  style: const TextStyle(
+                                                    fontStyle: FontStyle.italic,
+                                                  ),
+                                                ),
+                                              ]),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        RichText(
+                                          text: TextSpan(
+                                              style:
+                                                  DefaultTextStyle.of(context)
+                                                      .style,
+                                              children: [
+                                                const TextSpan(
+                                                  text:
+                                                      "Applicant CV:         ",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      Jobapplicationdetaillist[
+                                                              index]
+                                                          .DocumentPath,
                                                   style: const TextStyle(
                                                     fontStyle: FontStyle.italic,
                                                   ),

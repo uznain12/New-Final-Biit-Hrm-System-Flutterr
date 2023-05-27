@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:hrm_final_project/Dashboards/applicant_dash.dart';
 import 'package:hrm_final_project/Dashboards/employee_dash.dart';
 import 'package:hrm_final_project/Dashboards/guard_dash.dart';
+import 'package:hrm_final_project/Dashboards/hod_dash.dart';
 import 'package:hrm_final_project/Dashboards/hr_dash.dart';
 import 'package:hrm_final_project/Login-Signup/signup.dart';
 import 'package:hrm_final_project/Models/login_signup_model.dart';
@@ -252,40 +253,40 @@ class _LoginPageState extends State<LoginPage> {
                                               )),
                                         ),
                                       );
-                                      // } else if (role == "hod") {
-                                      //   SharedPreferences sp =
-                                      //       await SharedPreferences.getInstance();
-                                      //   sp.setString('email',
-                                      //       _emailcontroller.text.toString());
-                                      //   sp.setString('role', "hod");
-                                      //   sp.setBool('islogin', true);
-                                      //   Navigator.push(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //       builder: ((context) =>
-                                      //           // ignore: prefer_const_constructors
-                                      //           AdminDashboard(
-                                      //             uid: uid,
-                                      //           )),
-                                      //     ),
-                                      //   );
-                                      // } else if (role == "comemployee") {
-                                      //   SharedPreferences sp =
-                                      //       await SharedPreferences.getInstance();
-                                      //   sp.setString('email',
-                                      //       _emailcontroller.text.toString());
-                                      //   sp.setString('role', "comemployee");
-                                      //   sp.setBool('islogin', true);
-                                      //   Navigator.push(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //       builder: ((context) =>
-                                      //           // ignore: prefer_const_constructors
-                                      //           CommitteMemberDashBoard(
-                                      //             uid: uid,
-                                      //           )),
-                                      //     ),
-                                      //   );
+                                    } else if (role == "hod") {
+                                      SharedPreferences sp =
+                                          await SharedPreferences.getInstance();
+                                      sp.setString('email',
+                                          _emailcontroller.text.toString());
+                                      sp.setString('role', "hod");
+                                      sp.setBool('islogin', true);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: ((context) =>
+                                              // ignore: prefer_const_constructors
+                                              HodDashboard(
+                                                uid: uid,
+                                              )),
+                                        ),
+                                      );
+                                    } else if (role == "comemployee") {
+                                      SharedPreferences sp =
+                                          await SharedPreferences.getInstance();
+                                      sp.setString('email',
+                                          _emailcontroller.text.toString());
+                                      sp.setString('role', "comemployee");
+                                      sp.setBool('islogin', true);
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: ((context) =>
+                                      //         // ignore: prefer_const_constructors
+                                      //         CommitteMemberDashBoard(
+                                      //           uid: uid,
+                                      //         )),
+                                      //   ),
+                                      // );
                                     } else {
                                       showDialog(
                                         context: context,
@@ -315,7 +316,7 @@ class _LoginPageState extends State<LoginPage> {
                                               "No User Found Please Sign Up First"),
                                           actions: <Widget>[
                                             TextButton(
-                                              child: Text("OK"),
+                                              child: const Text("OK"),
                                               onPressed: () {
                                                 Navigator.of(context).pop();
                                               },
