@@ -3,6 +3,7 @@ import 'package:hrm_final_project/Applicant-Home/Education/fetch_education.dart'
 import 'package:hrm_final_project/Applicant-Home/Experience/fetch_experience.dart';
 import 'package:hrm_final_project/Applicant-Home/Personal/personal_info.dart';
 
+// ignore: must_be_immutable
 class ApplicantProfile extends StatefulWidget {
   int? uid;
   ApplicantProfile({Key? key, required this.uid}) : super(key: key);

@@ -29,7 +29,7 @@ class Leavewithusermodel {
   String enddate;
   String reason;
   String status;
-  dynamic applydate;
+  DateTime applydate;
 
   Leavewithusermodel({
     required this.uid,
@@ -50,7 +50,7 @@ class Leavewithusermodel {
     required this.enddate,
     required this.reason,
     required this.status,
-    this.applydate,
+    required this.applydate,
   });
 
   factory Leavewithusermodel.fromJson(Map<String, dynamic> json) =>
@@ -59,21 +59,25 @@ class Leavewithusermodel {
         fname: json["Fname"],
         lname: json["Lname"],
         email: json["email"],
-        mobile: json["mobile"],
-        cnic: json["cnic"],
-        dob: DateTime.parse(json["dob"]),
-        gender: json["gender"],
-        address: json["address"],
+        mobile: json["mobile"] ?? '',
+        cnic: json["cnic"] ?? '',
+        dob: json["dob"] != null
+            ? DateTime.parse(json["dob"])
+            : DateTime.now(), // or some other default date
+        gender: json["gender"] ?? '',
+        address: json["address"] ?? '',
         password: json["password"],
         role: json["role"],
-        image: json["image"],
+        image: json["image"] ?? '',
         leaveappid: json["leaveappid"] ?? 0,
         leavetype: json["leavetype"] ?? '',
         startdate: json["startdate"] ?? '',
         enddate: json["enddate"] ?? '',
         reason: json["reason"] ?? '',
         status: json["status"],
-        applydate: json["applydate"],
+        applydate: json["applydate"] != null
+            ? DateTime.parse(json["applydate"])
+            : DateTime.now(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -83,8 +87,7 @@ class Leavewithusermodel {
         "email": email,
         "mobile": mobile,
         "cnic": cnic,
-        "dob":
-            "${dob.year.toString().padLeft(4, '0')}-${dob.month.toString().padLeft(2, '0')}-${dob.day.toString().padLeft(2, '0')}",
+        "dob": dob.toIso8601String(),
         "gender": gender,
         "address": address,
         "password": password,
@@ -96,6 +99,6 @@ class Leavewithusermodel {
         "enddate": enddate,
         "reason": reason,
         "status": status,
-        "applydate": applydate,
+        "applydate": applydate.toIso8601String(),
       };
 }

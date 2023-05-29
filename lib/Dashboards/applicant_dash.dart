@@ -3,22 +3,18 @@
 import 'package:flutter/material.dart';
 import 'package:hrm_final_project/Applicant-Home/Job/applicant_applications.dart';
 import 'package:hrm_final_project/Applicant-Home/Job/all_job_get.dart';
-import 'package:hrm_final_project/Applicant-Home/Personal/personal_info.dart';
 import 'package:hrm_final_project/Applicant-Home/app_profile.dart';
-
 import 'package:hrm_final_project/Login-Signup/login.dart';
 import 'package:hrm_final_project/Models/user_model.dart';
 import 'package:hrm_final_project/uri.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 // ignore: must_be_immutable
 class ApplicantDashboard extends StatefulWidget {
   int? uid;
-  ApplicantDashboard({required this.uid});
+  ApplicantDashboard({super.key, required this.uid});
   // const ApplicantDashboard({super.key});
 
   @override
@@ -102,14 +98,14 @@ class _ApplicantDashboardState extends State<ApplicantDashboard> {
                   accountEmail:
                       Text("${userlist.isNotEmpty ? userlist[0].email : ''}"),
                   currentAccountPicture: CircleAvatar(
-                    child: userlist.isNotEmpty && userlist[0].image!.isNotEmpty
+                    child: userlist.isNotEmpty && userlist[0].image.isNotEmpty
                         ? ClipOval(
                             child: Image(
                                 fit: BoxFit.cover,
                                 height: 100,
                                 width: 100,
                                 image: NetworkImage(
-                                    imagepath + userlist[0].image!)),
+                                    imagepath + userlist[0].image)),
                           )
                         : const SizedBox.shrink(),
                   )),

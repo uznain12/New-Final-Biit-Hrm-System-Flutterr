@@ -209,7 +209,7 @@ class _LeaveDetailPlusActionState extends State<LeaveDetailPlusAction> {
       "reason": widget.reson,
       "enddate": widget.edate,
       "leavetype": widget.leavetype,
-      "applydate": widget.apdate,
+      "applydate": widget.apdate?.toIso8601String() ?? "",
       "status": 'rejected'
     };
     var boddy = jsonEncode(data);
@@ -240,9 +240,10 @@ class _LeaveDetailPlusActionState extends State<LeaveDetailPlusAction> {
       "reason": widget.reson,
       "enddate": widget.edate,
       "leavetype": widget.leavetype,
-      "applydate": widget.apdate,
+      "applydate": widget.apdate?.toIso8601String() ?? "",
       "status": 'approved'
     };
+
     var boddy = jsonEncode(data);
     var urlParse = Uri.parse(url);
     try {

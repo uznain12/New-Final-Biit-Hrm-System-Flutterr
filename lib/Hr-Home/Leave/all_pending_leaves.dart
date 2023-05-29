@@ -86,14 +86,28 @@ class _AllPendingLeaveState extends State<AllPendingLeave> {
                           itemBuilder: ((context, index) {
                             return Padding(
                               padding: EdgeInsets.only(
-                                  top: MediaQuery.of(context).size.height *
+                                  top:
+                                      MediaQuery.of(context).size.height * 0.01,
+                                  left:
+                                      MediaQuery.of(context).size.height * 0.01,
+                                  right: MediaQuery.of(context).size.height *
                                       0.01),
                               child: Container(
-                                height: 200,
+                                height: 180,
                                 decoration: BoxDecoration(
-                                    color: Colors.grey.shade300,
-                                    border: Border.all(
-                                        width: 4, color: Colors.black)),
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.grey.shade300,
+                                  border:
+                                      Border.all(width: 5, color: Colors.black),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.pink.shade50,
+                                      Colors.blue.shade100
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                ),
                                 child: Padding(
                                   padding: EdgeInsets.only(
                                       top: MediaQuery.of(context).size.height *

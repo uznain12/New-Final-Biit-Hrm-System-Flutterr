@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings
 
 import 'package:hrm_final_project/Applicant-Home/Personal/personal_info.dart';
 import 'package:hrm_final_project/Guard-Home/all_employees_attendance.dart';
@@ -22,9 +22,12 @@ class GuardDashboard extends StatefulWidget {
   State<GuardDashboard> createState() => _GuardDashboardState();
 }
 
-List<Usermodel> userlist = [];
-List<Usermodel> userlistbyrole = [];
-List<Attendancemodel> attendancewithidlist = [];
+List<Usermodel> userlist =
+    []; // ya model jo guard login ha uski profile show karway ga
+List<Usermodel> userlistbyrole =
+    []; // ya model employees ko show karway a card ma
+List<Attendancemodel> attendancewithidlist =
+    []; // is model sa attendance ki id la ka bhejay ga checkout pa update karnay ka liya
 
 class _GuardDashboardState extends State<GuardDashboard> {
   Map<int, bool> userCheckStatus =
@@ -177,8 +180,22 @@ class _GuardDashboardState extends State<GuardDashboard> {
                   builder: (context, snapshot) {
                     // If the snapshot has data, build the grid
                     if (snapshot.hasData) {
+                      List<Usermodel> filteredUsers = [];
+                      if (_searchQuery.isNotEmpty) {
+                        for (final user in userlistbyrole) {
+                          if (((user.fname?.toLowerCase() ?? '') +
+                                  ' ' +
+                                  (user.lname?.toLowerCase() ?? ''))
+                              .contains(_searchQuery.toLowerCase())) {
+                            filteredUsers.add(user);
+                          }
+                        }
+                      } else {
+                        filteredUsers = List.from(userlistbyrole);
+                      }
+
                       return GridView.builder(
-                          itemCount: userlistbyrole.length,
+                          itemCount: filteredUsers.length,
                           // Define the grid with 2 columns and spacing
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
@@ -191,19 +208,6 @@ class _GuardDashboardState extends State<GuardDashboard> {
                             childAspectRatio: 3 / 2.5,
                           ),
                           itemBuilder: (context, index) {
-                            if (_searchQuery.isNotEmpty &&
-                                // ignore: prefer_interpolation_to_compose_strings
-                                !((userlistbyrole[index].fname?.toLowerCase() ??
-                                            '') +
-                                        ' ' +
-                                        (userlistbyrole[index]
-                                                .lname
-                                                ?.toLowerCase() ??
-                                            ''))
-                                    .contains(_searchQuery.toLowerCase())) {
-                              return const SizedBox.shrink();
-                            }
-
                             // Initialize the check status for each user if not already initialized
                             if (userCheckStatus[userlistbyrole[index].uid] ==
                                 null) {
@@ -214,25 +218,25 @@ class _GuardDashboardState extends State<GuardDashboard> {
                             return InkWell(
                               onTap: () async {
                                 setState(() {
-                                  userCheckStatus[userlistbyrole[index].uid] =
+                                  userCheckStatus[filteredUsers[index].uid] =
                                       !userCheckStatus[
-                                          userlistbyrole[index].uid]!;
+                                          filteredUsers[index].uid]!;
                                 });
 
                                 Attendancemodel?
                                     attendanceData = //Ya Bhot Important line ha iska matlab ha ka jo hum na data attendance model ka get kiya wo userlist by employee ko provide kar diya ha
                                     await fetchAttendanceByUid(
-                                        userlistbyrole[index].uid);
+                                        filteredUsers[index].uid);
 
                                 if (userCheckStatus[
-                                    userlistbyrole[index].uid]!) {
+                                    filteredUsers[index].uid]!) {
                                   // ignore: use_build_context_synchronously
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => GuardCheckIn(
                                               selectedEmployee:
-                                                  userlistbyrole[index],
+                                                  filteredUsers[index],
                                               isCheckIn: true)));
                                 } else {
                                   if (attendanceData != null) {
@@ -245,14 +249,14 @@ class _GuardDashboardState extends State<GuardDashboard> {
                                                 Attendanceid:
                                                     attendanceData.attendanceid,
                                                 selectedEmployee:
-                                                    userlistbyrole[index],
+                                                    filteredUsers[index],
                                                 isCheckIn: false)));
                                   }
                                 }
                               },
                               child: Card(
                                 color:
-                                    userCheckStatus[userlistbyrole[index].uid]!
+                                    userCheckStatus[filteredUsers[index].uid]!
                                         ? Colors.green
                                         : Colors.red,
                                 // color: Colors.black,
@@ -268,7 +272,7 @@ class _GuardDashboardState extends State<GuardDashboard> {
                                       height: 90,
                                       // decoration:
                                       //     // BoxDecoration(color: Colors.black),
-                                      child: userlistbyrole[index]
+                                      child: filteredUsers[index]
                                               .image
                                               .isNotEmpty
                                           ? ClipOval(
@@ -278,7 +282,7 @@ class _GuardDashboardState extends State<GuardDashboard> {
                                                   width: 100,
                                                   image: NetworkImage(
                                                       imagepath +
-                                                          userlistbyrole[index]
+                                                          filteredUsers[index]
                                                               .image)),
                                             )
                                           // If the employee doesn't have an image, display an empty person icon
@@ -288,7 +292,7 @@ class _GuardDashboardState extends State<GuardDashboard> {
 
                                     // Display the employee's name
                                     Text(
-                                      "${userlistbyrole[index].fname} ${userlistbyrole[index].lname}",
+                                      "${filteredUsers[index].fname} ${filteredUsers[index].lname}",
                                       style: TextStyle(
                                           fontSize: 15, color: Colors.black),
                                     ),
@@ -355,6 +359,7 @@ class _GuardDashboardState extends State<GuardDashboard> {
 
   //ya jo function bnaya ha is ka bgair attendance update nai ho sakti iska matlab ya ha ka current user jo chehckin huva uski id ka base pa get kar ka hum na on tap ma provide kiya card ka ontap ma
 
+  // ignore: body_might_complete_normally_nullable
   Future<Attendancemodel?> fetchAttendanceByUid(int id) async {
     final response = await http.get(Uri.parse(
         'http://$ip/HrmPractise02/api/Attendance/AttendanceGet?uid=$id'));

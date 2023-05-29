@@ -6,6 +6,7 @@ import 'package:hrm_final_project/Models/job_model.dart';
 import 'package:hrm_final_project/uri.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart'; // use for dateformat
 
 // ignore: must_be_immutable
 class JobDetailScreen extends StatefulWidget {
@@ -20,6 +21,12 @@ class JobDetailScreen extends StatefulWidget {
 
 class _JobDetailScreenState extends State<JobDetailScreen> {
   List<Jobmodel> jobdetaillist = [];
+
+  String _formatDate(DateTime date) {
+    //ya date ko sai sa show karwanay ka liya bnaya ha like is format ma show hogi date
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
+
   // ignore: unused_field
   late Widget _widget;
   @override
@@ -227,8 +234,11 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                                                     fontSize: 16),
                                               ),
                                               TextSpan(
-                                                text:
-                                                    "${jobdetaillist[index].lastDateOfApply}",
+                                                text: _formatDate(
+                                                    DateTime.parse(
+                                                        jobdetaillist[index]
+                                                            .lastDateOfApply
+                                                            .toString())),
                                                 style: const TextStyle(
                                                   fontSize: 16,
                                                 ),

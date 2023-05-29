@@ -6,7 +6,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class GuardCheckIn extends StatefulWidget {
-  final bool isCheckIn;
+  final bool
+      isCheckIn; // Iska koi khas use nai ha is ma iskay bgair bi sai kam karti ha App
   final Usermodel
       selectedEmployee; //selected employee jis pa click ki ha woi open hoga iskay hrough jesay user ko id ki base pa la ka atay hn usi tarah
   GuardCheckIn(

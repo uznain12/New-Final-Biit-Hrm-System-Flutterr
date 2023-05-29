@@ -124,7 +124,7 @@ class _EmployeeApplyLeaveState extends State<EmployeeApplyLeave> {
                                 context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(1900),
-                                lastDate: DateTime.now());
+                                lastDate: DateTime(2300));
                             if (picked != null) {
                               setState(() {
                                 _startDateController.text =

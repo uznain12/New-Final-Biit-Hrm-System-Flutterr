@@ -1,20 +1,17 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hrm_final_project/Applicant-Home/Job/all_job_get.dart';
 import 'package:hrm_final_project/Applicant-Home/Job/job_detail.dart';
 import 'package:hrm_final_project/Applicant-Home/app_profile.dart';
 import 'package:hrm_final_project/Dashboards/applicant_dash.dart';
 import 'package:hrm_final_project/Models/job_model.dart';
 import 'package:hrm_final_project/uri.dart';
-
 import 'package:http/http.dart' as http;
 
 // ignore: must_be_immutable
 class BstMatchApplicantApplyJob extends StatefulWidget {
   int? uid;
-  BstMatchApplicantApplyJob({required this.uid});
+  BstMatchApplicantApplyJob({super.key, required this.uid});
   // const ApplicantApplyJob({super.key});
 
   @override
@@ -24,6 +21,7 @@ class BstMatchApplicantApplyJob extends StatefulWidget {
 
 class _BstMatchApplicantApplyJobState extends State<BstMatchApplicantApplyJob> {
   List<Jobmodel> joblist = [];
+  // ignore: unused_field
   late Widget _widget;
   @override
   void initState() {
@@ -130,9 +128,10 @@ class _BstMatchApplicantApplyJobState extends State<BstMatchApplicantApplyJob> {
                   List<Jobmodel> filteredJobs = [];
                   if (_searchQuery.isNotEmpty) {
                     for (final user in joblist) {
-                      if (((user.title.toLowerCase() ?? '') +
+                      // ignore: prefer_interpolation_to_compose_strings
+                      if (((user.title.toLowerCase()) +
                               ' ' +
-                              (user.location.toLowerCase() ?? '') +
+                              (user.location.toLowerCase()) +
                               ' ' +
                               (user.salary..toString().toLowerCase()))
                           .contains(_searchQuery.toLowerCase())) {
@@ -377,7 +376,7 @@ class _BstMatchApplicantApplyJobState extends State<BstMatchApplicantApplyJob> {
                                           uid: widget.uid,
                                         )));
                           },
-                          child: Text("Best Match")),
+                          child: const Text("Best Match")),
 
                       Padding(
                         padding: const EdgeInsets.all(12.0),
@@ -385,16 +384,16 @@ class _BstMatchApplicantApplyJobState extends State<BstMatchApplicantApplyJob> {
                           decoration: InputDecoration(
                             labelText: 'Search',
                             hintText: 'Enter Job Title',
-                            prefixIcon: Icon(Icons.search),
+                            prefixIcon: const Icon(Icons.search),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30.0),
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 1.0),
+                              borderSide: const BorderSide(
+                                  color: Colors.black, width: 1.0),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30.0),
-                              borderSide:
-                                  BorderSide(color: Colors.blue, width: 2.0),
+                              borderSide: const BorderSide(
+                                  color: Colors.blue, width: 2.0),
                             ),
                             fillColor: Colors.white,
                             filled: true,
@@ -492,7 +491,7 @@ class _BstMatchApplicantApplyJobState extends State<BstMatchApplicantApplyJob> {
                                       boxShadow: [
                                         BoxShadow(
                                           color: Colors.black.withOpacity(0.2),
-                                          offset: Offset(0, 3),
+                                          offset: const Offset(0, 3),
                                           blurRadius: 6,
                                           spreadRadius: 2,
                                         ),
@@ -545,7 +544,7 @@ class _BstMatchApplicantApplyJobState extends State<BstMatchApplicantApplyJob> {
                                               padding: const EdgeInsets.only(
                                                   left: 27),
                                               child: Text(
-                                                "${filteredJobs[index].location}",
+                                                filteredJobs[index].location,
                                                 style: const TextStyle(
                                                   fontSize: 17,
                                                   fontWeight: FontWeight.w500,
@@ -610,6 +609,7 @@ class _BstMatchApplicantApplyJobState extends State<BstMatchApplicantApplyJob> {
         joblist.add(Jobmodel.fromJson(index));
       }
     } else {
+      // ignore: avoid_print
       print(
           'Error occurred: ${response.statusCode} - ${response.body}'); // print the error
 //jab necahy walay comments on karnay hn to phir navbar ka through profile ma nai jana nai to ya har jagha error dega hum na appbar ma drawer ka andr sa profile ma jana or complete karni hA PROFILE

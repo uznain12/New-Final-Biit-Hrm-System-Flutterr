@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:hrm_final_project/Hr-Home/Job/jobapplications_detail.dart';
 import 'package:hrm_final_project/Models/hr_side_job_user_jobapplication_model.dart';
 import 'package:hrm_final_project/uri.dart';
@@ -7,6 +6,7 @@ import 'package:hrm_final_project/uri.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+// ignore: must_be_immutable
 class JobApplications extends StatefulWidget {
   int? uid;
   JobApplications({super.key, required this.uid});
@@ -17,15 +17,15 @@ class JobApplications extends StatefulWidget {
 
 class _JobApplicationsState extends State<JobApplications> {
   List<JobuserjobapplicationmodelDart> jobapplicationlist = [];
+
   _Filter? _selectedFilter; //This line only use for dropdownfilter
 
-  int selectedCount = 0;
-
   final List<_Filter> _filters = [
-    _Filter(name: 'Teacher', isSelected: false),
     _Filter(name: 'Guard', isSelected: false),
     _Filter(name: 'Lab Attendant', isSelected: false),
-    _Filter(name: 'Assistant teacher', isSelected: false),
+    _Filter(name: 'Junior Lecturer', isSelected: false),
+    _Filter(name: 'Lectruer', isSelected: false),
+    _Filter(name: 'Assistant Professor', isSelected: false),
     _Filter(name: 'Professor', isSelected: false),
   ];
   @override
@@ -58,11 +58,11 @@ class _JobApplicationsState extends State<JobApplications> {
                 return Column(children: [
                   Padding(
                     padding: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.47),
+                        left: MediaQuery.of(context).size.width * 0.36),
                     child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
-                      margin: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 2.0),
+                      margin: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         border: Border.all(
@@ -71,7 +71,7 @@ class _JobApplicationsState extends State<JobApplications> {
                         ),
                       ),
                       child: DropdownButton<_Filter>(
-                        hint: Text(
+                        hint: const Text(
                           'Select Job',
                           style: TextStyle(color: Colors.red),
                         ),
@@ -238,7 +238,7 @@ class _JobApplicationsState extends State<JobApplications> {
                   //     ],
                   //   ),
                   // ),
-                  Text("$selectedCount item(s) selected"), // Add this line
+                  // Add this line
                   Expanded(
                     child: GridView.builder(
                         gridDelegate:
@@ -248,7 +248,7 @@ class _JobApplicationsState extends State<JobApplications> {
                               5.0, // Decreased from MediaQuery.of(context).size.height * 0.09
                           crossAxisSpacing:
                               10.0, // Decreased from MediaQuery.of(context).size.width * 0.09
-                          childAspectRatio: 3.2 / 3,
+                          childAspectRatio: 3.2 / 2.8,
                         ),
                         itemCount: filteredJobApplications.length,
                         itemBuilder: ((context, index) {
@@ -321,7 +321,7 @@ class _JobApplicationsState extends State<JobApplications> {
                                                 children: [
                                                   const TextSpan(
                                                     text:
-                                                        "Job Title :                 ",
+                                                        "Job Title :                    ",
                                                     style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -371,9 +371,26 @@ class _JobApplicationsState extends State<JobApplications> {
                                                 ]),
                                           ),
                                         ),
-                                        const SizedBox(height: 4),
-                                        const SizedBox(height: 4),
-                                        const SizedBox(height: 4),
+                                        // const SizedBox(height: 4),
+                                        // Padding(
+                                        //   padding:
+                                        //       const EdgeInsets.only(left: 30),
+                                        //   child: ElevatedButton(
+                                        //       onPressed: () {
+                                        //         Navigator.push(
+                                        //             context,
+                                        //             MaterialPageRoute(
+                                        //                 builder: (context) =>
+                                        //                     AssignJobToCommittee(
+                                        //                       uid: widget.uid,
+                                        //                       jobappid:
+                                        //                           filteredJobApplications[
+                                        //                                   index]
+                                        //                               .jobApplicationId,
+                                        //                     )));
+                                        //       },
+                                        //       child: const Text("Assign Job")),
+                                        // )
                                       ],
                                     ),
                                   ),
@@ -385,7 +402,7 @@ class _JobApplicationsState extends State<JobApplications> {
                   ),
                 ]);
               } else {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
             }));
   }

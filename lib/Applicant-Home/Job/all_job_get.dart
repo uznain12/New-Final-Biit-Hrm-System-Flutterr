@@ -23,11 +23,9 @@ class ApplicantApplyJob extends StatefulWidget {
 
 class _ApplicantApplyJobState extends State<ApplicantApplyJob> {
   List<Jobmodel> joblist = [];
-  late Widget _widget;
   @override
   void initState() {
     super.initState();
-    _widget = ApplicantApplyJob(uid: widget.uid);
   }
 
   String _searchQuery = ''; // User for search
@@ -129,9 +127,10 @@ class _ApplicantApplyJobState extends State<ApplicantApplyJob> {
                   List<Jobmodel> filteredJobs = [];
                   if (_searchQuery.isNotEmpty) {
                     for (final user in joblist) {
-                      if (((user.title.toLowerCase() ?? '') +
+                      // ignore: prefer_interpolation_to_compose_strings
+                      if (((user.title.toLowerCase()) +
                               ' ' +
-                              (user.location.toLowerCase() ?? '') +
+                              (user.location.toLowerCase()) +
                               ' ' +
                               (user.salary..toString().toLowerCase()))
                           .contains(_searchQuery.toLowerCase())) {
@@ -366,17 +365,17 @@ class _ApplicantApplyJobState extends State<ApplicantApplyJob> {
                       //   ),
                       // ),
 
-                      ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        BstMatchApplicantApplyJob(
-                                          uid: widget.uid,
-                                        )));
-                          },
-                          child: Text("Best Match")),
+                      // ElevatedButton(
+                      //     onPressed: () {
+                      //       Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //               builder: (context) =>
+                      //                   BstMatchApplicantApplyJob(
+                      //                     uid: widget.uid,
+                      //                   )));
+                      //     },
+                      //     child: Text("Best Match")),
 
                       Padding(
                         padding: const EdgeInsets.all(12.0),

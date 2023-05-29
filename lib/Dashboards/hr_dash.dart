@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:hrm_final_project/Applicant-Home/Personal/personal_info.dart';
 import 'package:hrm_final_project/Guard-Home/all_employees_attendance.dart';
+import 'package:hrm_final_project/Hr-Home/Job/all_posted_jobs.dart';
 import 'package:hrm_final_project/Hr-Home/Job/job_applications.dart';
 import 'package:hrm_final_project/Hr-Home/Job/job_post.dart';
 import 'package:hrm_final_project/Hr-Home/Leave/all_leave_applications.dart';
@@ -111,14 +112,14 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   'Posted Jobs ',
                 ),
                 onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => AllPostedJobs(
-                  //       uid: widget.uid,
-                  //     ),
-                  //   ),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AllPostedJobs(
+                        uid: widget.uid,
+                      ),
+                    ),
+                  );
                 },
               ),
               ListTile(
@@ -128,7 +129,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AllLeaveApplications(),
+                      builder: (context) => AllPendingLeave(),
                     ),
                   );
                 },
@@ -357,8 +358,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   ),
                   InkWell(
                     onTap: () {
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) => JobPost()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => JobPost()));
                     },
                     child: Container(
                       height: 150,

@@ -10,6 +10,7 @@ import 'dart:convert';
 
 import 'package:image_picker/image_picker.dart';
 
+// ignore: must_be_immutable
 class PersonalUpdate extends StatefulWidget {
   int? uid;
   String? email;
@@ -292,6 +293,7 @@ class _PersonalUpdateState extends State<PersonalUpdate> {
         'http://$ip/HrmPractise02/api/User/NewUserGet?id=${widget.uid}&email=${widget.email}&password=${widget.pass}&role=${widget.role}'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
+      // ignore: unnecessary_null_comparison
       if (data != null) {
         final user = Usermodel.fromJson(data);
         _firstnameController.text = user.fname.toString();
@@ -301,12 +303,13 @@ class _PersonalUpdateState extends State<PersonalUpdate> {
         _dobController.text = user.dob.toString();
         _genderController.text = user.gender.toString();
         _addressController.text = user.address.toString();
-        imageUrl = imagepath + user.image!;
+        imageUrl = imagepath + user.image;
 
-        if (user.image != null && user.image!.isNotEmpty) {
+        // ignore: unnecessary_null_comparison
+        if (user.image != null && user.image.isNotEmpty) {
           setState(() {
             image = null; // Clear the previously selected image
-            imageUrl = imagepath + user.image!;
+            imageUrl = imagepath + user.image;
           });
         }
       }
