@@ -1,7 +1,6 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, avoid_print, unused_field
 
 import 'package:flutter/material.dart';
-import 'package:hrm_final_project/Hr-Home/New-Committe/all_head.dart';
 import 'package:hrm_final_project/Hr-Home/New-Committe/new_create_committe.dart';
 import 'package:hrm_final_project/Models/committe_model.dart';
 import 'package:hrm_final_project/uri.dart';
@@ -11,7 +10,8 @@ import 'dart:convert';
 
 class AssignJobToCommittee extends StatefulWidget {
   int? uid;
-  int? jobappid;
+  final List<int>? jobappid;
+
   AssignJobToCommittee({super.key, required this.uid, required this.jobappid});
 
   @override
@@ -20,15 +20,22 @@ class AssignJobToCommittee extends StatefulWidget {
 
 class _AssignJobToCommitteeState extends State<AssignJobToCommittee> {
   List<CommitteModel> committelist = [];
-  Map<int, bool> committeeAssignSuccess = Map<int,
-      bool>(); // Ya is liya bnaya ha ka jab committee ko job assign ho jay to tick jo ha done ma change ho jay or isko hum na upload ka function ma use kiya ha or icon button ka icon ma sirf 2 jagha ya use huva ha
+  Map<int, bool> committeeAssignSuccess = <int,
+      bool>{}; // Ya is liya bnaya ha ka jab committee ko job assign ho jay to tick jo ha done ma change ho jay or isko hum na upload ka function ma use kiya ha or icon button ka icon ma sirf 2 jagha ya use huva ha
 
   late Future<List<CommitteModel>>
       _futureCommitteeList; // this is for refresh the screen means refresh functionality
-
   @override
   void initState() {
     super.initState();
+    if (widget.jobappid == null) {
+      print("jobappid is null");
+      // Handle the case when jobappid is null
+    } else {
+      print("jobappid is not null");
+      print("jobappid: ${widget.jobappid}");
+      // Handle the case when jobappid is not null
+    }
     _futureCommitteeList = getcommitte();
   }
 
@@ -194,27 +201,9 @@ class _AssignJobToCommitteeState extends State<AssignJobToCommittee> {
                             );
                           });
                     } else {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
                   }),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.72,
-                  left: MediaQuery.of(context).size.width * 0.8),
-              child: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AllHeadsForCommiitte(
-                                  uid: widget.uid,
-                                )));
-                  },
-                  icon: const Icon(
-                    Icons.add,
-                    size: 60,
-                  )),
             ),
           ],
         ));
@@ -241,26 +230,35 @@ class _AssignJobToCommitteeState extends State<AssignJobToCommittee> {
   void Addtocommitteeapplications(int committeeId) async {
     var url =
         "http://$ip/HrmPractise02/api/Assignjobapplication/AssinJobApplicationToCommittee2";
-    var data = {
-      "JobApplicationID": widget.jobappid,
-      "CommitteeId": committeeId
-    };
-    var boddy = jsonEncode(data);
-    var urlParse = Uri.parse(url);
-    try {
-      http.Response response = await http.post(urlParse,
-          body: boddy, headers: {"Content-Type": "application/json"});
-      var dataa = jsonDecode(response.body);
-      print(dataa);
-      if (response.statusCode == 200) {
-        // or whatever condition you want to check for success
-        setState(() {
-          committeeAssignSuccess[committeeId] =
-              true; //ya jo uper map bnaya icon change karnay ka liya wo use huva ha
-        });
+
+    if (widget.jobappid != null) {
+      for (int jobApplicationId in widget.jobappid!) {
+        var data = {
+          "JobApplicationID": jobApplicationId,
+          "CommitteeId": committeeId
+        };
+        var boddy = jsonEncode(data);
+        var urlParse = Uri.parse(url);
+
+        try {
+          http.Response response = await http.post(
+            urlParse,
+            body: boddy,
+            headers: {"Content-Type": "application/json"},
+          );
+
+          var dataa = jsonDecode(response.body);
+          print(dataa);
+
+          if (response.statusCode == 200) {
+            setState(() {
+              committeeAssignSuccess[committeeId] = true;
+            });
+          }
+        } catch (e) {
+          print('Error occurred: $e');
+        }
       }
-    } catch (e) {
-      print('Error occurred: $e');
     }
   }
 }

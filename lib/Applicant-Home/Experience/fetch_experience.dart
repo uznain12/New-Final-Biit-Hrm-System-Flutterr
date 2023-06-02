@@ -151,7 +151,8 @@ class _FetchExperienceState extends State<FetchExperience> {
                                                 ),
                                                 TextSpan(
                                                   text:
-                                                      "${_formatDate(DateTime.parse(experiencelist[index].enddate.toString()))}",
+                                                      // ignore: unnecessary_string_interpolations
+                                                      "${experiencelist[index].enddate != null ? _formatDate(DateTime.parse(experiencelist[index].enddate.toString())) : '-'}",
                                                   style: const TextStyle(
                                                     fontStyle: FontStyle.italic,
                                                   ),

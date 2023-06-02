@@ -42,6 +42,7 @@ class JobuserjobapplicationmodelDart {
   String description;
   String jobstatus;
   int noofvacancie;
+  bool isitemselected = false;
 
   JobuserjobapplicationmodelDart({
     required this.userUid,
@@ -88,7 +89,7 @@ class JobuserjobapplicationmodelDart {
         address: json["address"],
         password: json["password"],
         role: json["role"],
-        image: json["image"],
+        image: json["image"] ?? '',
         jobApplicationId: json["JobApplicationID"],
         jobApplicationJid: json["JobApplicationJid"],
         jobApplicationUid: json["JobApplicationUid"],

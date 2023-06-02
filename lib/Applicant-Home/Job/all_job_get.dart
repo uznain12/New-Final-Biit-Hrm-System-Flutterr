@@ -124,7 +124,9 @@ class _ApplicantApplyJobState extends State<ApplicantApplyJob> {
               ),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  List<Jobmodel> filteredJobs = [];
+                  //Search Query On Filter base
+                  List<Jobmodel> filteredJobs =
+                      []; // Now use this filter list in everywhere in in listview
                   if (_searchQuery.isNotEmpty) {
                     for (final user in joblist) {
                       // ignore: prefer_interpolation_to_compose_strings
@@ -365,17 +367,17 @@ class _ApplicantApplyJobState extends State<ApplicantApplyJob> {
                       //   ),
                       // ),
 
-                      // ElevatedButton(
-                      //     onPressed: () {
-                      //       Navigator.push(
-                      //           context,
-                      //           MaterialPageRoute(
-                      //               builder: (context) =>
-                      //                   BstMatchApplicantApplyJob(
-                      //                     uid: widget.uid,
-                      //                   )));
-                      //     },
-                      //     child: Text("Best Match")),
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        BstMatchApplicantApplyJob(
+                                          uid: widget.uid,
+                                        )));
+                          },
+                          child: const Text("Best Match")),
 
                       Padding(
                         padding: const EdgeInsets.all(12.0),
@@ -383,16 +385,16 @@ class _ApplicantApplyJobState extends State<ApplicantApplyJob> {
                           decoration: InputDecoration(
                             labelText: 'Search',
                             hintText: 'Enter Job Title',
-                            prefixIcon: Icon(Icons.search),
+                            prefixIcon: const Icon(Icons.search),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30.0),
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 1.0),
+                              borderSide: const BorderSide(
+                                  color: Colors.black, width: 1.0),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30.0),
-                              borderSide:
-                                  BorderSide(color: Colors.blue, width: 2.0),
+                              borderSide: const BorderSide(
+                                  color: Colors.blue, width: 2.0),
                             ),
                             fillColor: Colors.white,
                             filled: true,
@@ -490,7 +492,7 @@ class _ApplicantApplyJobState extends State<ApplicantApplyJob> {
                                       boxShadow: [
                                         BoxShadow(
                                           color: Colors.black.withOpacity(0.2),
-                                          offset: Offset(0, 3),
+                                          offset: const Offset(0, 3),
                                           blurRadius: 6,
                                           spreadRadius: 2,
                                         ),
@@ -543,6 +545,7 @@ class _ApplicantApplyJobState extends State<ApplicantApplyJob> {
                                               padding: const EdgeInsets.only(
                                                   left: 27),
                                               child: Text(
+                                                // ignore: unnecessary_string_interpolations
                                                 "${filteredJobs[index].location}",
                                                 style: const TextStyle(
                                                   fontSize: 17,

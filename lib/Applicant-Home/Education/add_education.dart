@@ -22,6 +22,14 @@ List<String> _options = [
   'Master',
 ]; // op
 
+String? _selectinstitute;
+List<String> _institutes = [
+  'Bims University',
+  'Priston University',
+  'Iqra University',
+  'Other',
+]; // op
+
 TextEditingController _instituteController = TextEditingController();
 TextEditingController _boardController = TextEditingController();
 TextEditingController _startDateController = TextEditingController();
@@ -107,24 +115,118 @@ class _AddEducationState extends State<AddEducation> {
                   const SizedBox(
                     height: 10,
                   ),
-                  TextFormField(
-                    controller: _instituteController,
+                  // TextFormField(
+                  //   controller: _instituteController,
+                  //   decoration: const InputDecoration(
+                  //     prefixIcon: Icon(Icons.school_sharp),
+                  //     prefixIconConstraints: BoxConstraints(
+                  //       minWidth: 54,
+                  //       minHeight: 54,
+                  //     ),
+                  //     labelText: 'Institute',
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  //   validator: (value) {
+                  //     if (value == null || value.isEmpty) {
+                  //       return 'Please enter your Institute';
+                  //     }
+                  //     return null;
+                  //   },
+                  // ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  InputDecorator(
                     decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.school_sharp),
+                      prefixIcon: Icon(Icons.school),
                       prefixIconConstraints: BoxConstraints(
                         minWidth: 54,
                         minHeight: 54,
                       ),
-                      labelText: 'Institute',
                       border: OutlineInputBorder(),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your Institute';
-                      }
-                      return null;
-                    },
+                    child: DropdownButtonFormField<String>(
+                      hint: const Text(
+                        "Institute",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      isExpanded: true,
+                      value: _selectinstitute,
+                      items: _institutes.map((String option) {
+                        return DropdownMenuItem(
+                          value: option,
+                          child: Text(option),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        setState(() {
+                          _selectinstitute = newValue;
+                        });
+
+                        if (newValue == 'Other') {
+                          _instituteController.text = '';
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Enter Other Institute'),
+                                content: TextFormField(
+                                  controller: _instituteController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Other Institute',
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      // Save the entered value to the same column in the database
+                                      _instituteController.text =
+                                          _instituteController.text;
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Save'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select a degree';
+                        }
+                        return null;
+                      },
+                    ),
                   ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  // TextFormField(
+                  //   controller: _majorController,
+                  //   decoration: const InputDecoration(
+                  //     prefixIcon: Icon(Icons.school_sharp),
+                  //     prefixIconConstraints: BoxConstraints(
+                  //       minWidth: 54,
+                  //       minHeight: 54,
+                  //     ),
+                  //     labelText: 'Major',
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  //   validator: (value) {
+                  //     if (value == null || value.isEmpty) {
+                  //       return 'Please enter Major';
+                  //     }
+                  //     return null;
+                  //   },
+                  // ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -251,7 +353,11 @@ class _AddEducationState extends State<AddEducation> {
     var url = "http://$ip/HrmPractise02/api/Education/EducationPost";
     var data = {
       "Uid": widget.uid,
-      "Institute": _instituteController.text,
+
+      "Institute": _selectinstitute == 'Other'
+          ? _instituteController.text
+          : _selectinstitute,
+
       "Board": _boardController.text,
       "major": _majorController.text,
       "Startdate": _startDateController.text,

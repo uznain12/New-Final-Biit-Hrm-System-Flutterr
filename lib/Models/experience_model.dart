@@ -39,7 +39,9 @@ class Experienicemodel {
         title: json["Title"],
         startdate: DateTime.parse(json["Startdate"]),
         currentwork: json["currentwork"] ?? '',
-        enddate: DateTime.parse(json["Enddate"]),
+        enddate: json["enddate"] != null
+            ? DateTime.parse(json["enddate"])
+            : DateTime.now(),
         otherskill: json["otherskill"],
       );
 
@@ -51,8 +53,7 @@ class Experienicemodel {
         "Startdate":
             "${startdate.year.toString().padLeft(4, '0')}-${startdate.month.toString().padLeft(2, '0')}-${startdate.day.toString().padLeft(2, '0')}",
         "currentwork": currentwork,
-        "Enddate":
-            "${enddate.year.toString().padLeft(4, '0')}-${enddate.month.toString().padLeft(2, '0')}-${enddate.day.toString().padLeft(2, '0')}",
+        "Enddate": enddate.toIso8601String(),
         "otherskill": otherskill,
       };
 }

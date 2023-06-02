@@ -30,6 +30,13 @@ class _AllPendingLeaveState extends State<AllPendingLeave> {
     super.initState();
   }
 
+  _Filter? _selectedFilter; //This line only use for dropdownfilter
+
+  final List<_Filter> _filters = [
+    _Filter(name: 'approved', isSelected: false),
+    _Filter(name: 'rejected', isSelected: false),
+    _Filter(name: 'pending', isSelected: false),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,48 +48,113 @@ class _AllPendingLeaveState extends State<AllPendingLeave> {
             future: fetchleaveapplication(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                List<Leavewithusermodel> filteredLeaveApplications = [];
+                if (_filters.any((filter) => filter.isSelected)) {
+                  for (final leaveApplication in laveapplicationlist) {
+                    for (final filter in _filters) {
+                      if (filter.isSelected &&
+                          leaveApplication.status.toLowerCase().trim() ==
+                              filter.name.toLowerCase().trim()) {
+                        filteredLeaveApplications.add(leaveApplication);
+                        break;
+                      }
+                    }
+                  }
+                } else {
+                  filteredLeaveApplications = List.from(laveapplicationlist);
+                }
                 return Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment
-                          .spaceAround, // distribute buttons evenly
-                      children: <Widget>[
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        AllLeaveApplications()));
-                            // button press code here
-                          },
-                          child: const Text('All'),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: MediaQuery.of(context).size.width * 0.40),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 2.0),
+                        margin: EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 2.0,
+                          ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AllAprovedLeave()));
-                            // button press code here
+                        child: DropdownButton<_Filter>(
+                          hint: Text(
+                            'Select Leave',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                          value: _selectedFilter,
+                          onChanged: (_Filter? newValue) {
+                            setState(() {
+                              _selectedFilter = newValue;
+                              if (_selectedFilter != null) {
+                                _selectedFilter!.isSelected =
+                                    !_selectedFilter!.isSelected;
+                              }
+                            });
                           },
-                          child: const Text('Approved'),
+                          items: _filters
+                              .map<DropdownMenuItem<_Filter>>((_Filter filter) {
+                            return DropdownMenuItem<_Filter>(
+                              value: filter,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(filter.name),
+                                  if (filter.isSelected)
+                                    Icon(
+                                      Icons.check,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AllRejectedLeaves()));
-                            // button press code here
-                          },
-                          child: const Text('Rejected'),
-                        ),
-                      ],
+                      ),
                     ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment
+                    //       .spaceAround, // distribute buttons evenly
+                    //   children: <Widget>[
+                    //     ElevatedButton(
+                    //       onPressed: () {
+                    //         Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (context) =>
+                    //                     AllLeaveApplications()));
+                    //         // button press code here
+                    //       },
+                    //       child: const Text('All'),
+                    //     ),
+                    //     ElevatedButton(
+                    //       onPressed: () {
+                    //         Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (context) => AllAprovedLeave()));
+                    //         // button press code here
+                    //       },
+                    //       child: const Text('Approved'),
+                    //     ),
+                    //     ElevatedButton(
+                    //       onPressed: () {
+                    //         Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (context) => AllRejectedLeaves()));
+                    //         // button press code here
+                    //       },
+                    //       child: const Text('Rejected'),
+                    //     ),
+                    //   ],
+                    // ),
                     Expanded(
                       child: ListView.builder(
-                          itemCount: laveapplicationlist.length,
+                          itemCount: filteredLeaveApplications.length,
                           itemBuilder: ((context, index) {
                             return Padding(
                               padding: EdgeInsets.only(
@@ -138,7 +210,7 @@ class _AllPendingLeaveState extends State<AllPendingLeave> {
                                                 ),
                                                 TextSpan(
                                                   text:
-                                                      "${laveapplicationlist[index].fname} ${laveapplicationlist[index].lname} ",
+                                                      "${filteredLeaveApplications[index].fname} ${laveapplicationlist[index].lname} ",
                                                   style: const TextStyle(
                                                     fontStyle: FontStyle.italic,
                                                   ),
@@ -169,7 +241,7 @@ class _AllPendingLeaveState extends State<AllPendingLeave> {
                                                 TextSpan(
                                                   text:
                                                       // ignore: unnecessary_string_interpolations
-                                                      "${laveapplicationlist[index].leavetype}",
+                                                      "${filteredLeaveApplications[index].leavetype}",
                                                   style: const TextStyle(
                                                     fontStyle: FontStyle.italic,
                                                   ),
@@ -197,7 +269,7 @@ class _AllPendingLeaveState extends State<AllPendingLeave> {
                                                   ),
                                                 ),
                                                 TextSpan(
-                                                  text: laveapplicationlist[
+                                                  text: filteredLeaveApplications[
                                                                   index]
                                                               .applydate ==
                                                           null
@@ -236,7 +308,7 @@ class _AllPendingLeaveState extends State<AllPendingLeave> {
                                                 ),
                                                 TextSpan(
                                                   text:
-                                                      "${laveapplicationlist[index].status} ",
+                                                      "${filteredLeaveApplications[index].status} ",
                                                   style: const TextStyle(
                                                     fontStyle: FontStyle.italic,
                                                   ),
@@ -255,36 +327,36 @@ class _AllPendingLeaveState extends State<AllPendingLeave> {
                                                         builder: (context) =>
                                                             LeaveDetailPlusAction(
                                                               uid:
-                                                                  laveapplicationlist[
+                                                                  filteredLeaveApplications[
                                                                           index]
                                                                       .uid,
                                                               reson:
-                                                                  laveapplicationlist[
+                                                                  filteredLeaveApplications[
                                                                           index]
                                                                       .reason,
                                                               leavetype:
-                                                                  laveapplicationlist[
+                                                                  filteredLeaveApplications[
                                                                           index]
                                                                       .leavetype,
                                                               sdate:
-                                                                  laveapplicationlist[
+                                                                  filteredLeaveApplications[
                                                                           index]
                                                                       .startdate,
                                                               edate:
-                                                                  laveapplicationlist[
+                                                                  filteredLeaveApplications[
                                                                           index]
                                                                       .enddate,
                                                               apdate:
-                                                                  laveapplicationlist[
+                                                                  filteredLeaveApplications[
                                                                           index]
                                                                       .applydate,
                                                               leavid:
-                                                                  laveapplicationlist[
+                                                                  filteredLeaveApplications[
                                                                           index]
                                                                       .leaveappid,
                                                             )));
                                               },
-                                              child: Text("Detail")),
+                                              child: const Text("Detail")),
                                         ),
                                       )
                                     ],
@@ -305,7 +377,7 @@ class _AllPendingLeaveState extends State<AllPendingLeave> {
   Future<List<Leavewithusermodel>> fetchleaveapplication() async {
     //response keyword khud sa bnaya ha
     final response = await http.get(Uri.parse(
-        'http://$ip/HrmPractise02/api/Leave/AllNewPendingLeaveGet')); // is ma aik variable bnaya ha response ka name sa or phir get method ka through api ko hit kar rahay hn is ka data aik data variable ma store karway ga
+        'http://$ip/HrmPractise02/api/Leave/NewAllLeaveapplicationGet')); // is ma aik variable bnaya ha response ka name sa or phir get method ka through api ko hit kar rahay hn is ka data aik data variable ma store karway ga
     // ignore: non_constant_identifier_names
     var Data = jsonDecode(response.body
         .toString()); // decode kar ka data variable ma store kar rahay hn
@@ -319,4 +391,11 @@ class _AllPendingLeaveState extends State<AllPendingLeave> {
       return laveapplicationlist;
     }
   }
+}
+
+class _Filter {
+  String name;
+  bool isSelected;
+
+  _Filter({required this.name, required this.isSelected});
 }

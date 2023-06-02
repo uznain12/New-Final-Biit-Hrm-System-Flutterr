@@ -48,6 +48,7 @@ dependencies:
   shared_preferences: ^2.1.0
   persistent_bottom_nav_bar:
   file_picker: ^5.2.11
+  path_provider: ^2.0.15
 
 dev_dependencies:
   flutter_test:

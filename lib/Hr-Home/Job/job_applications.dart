@@ -1,4 +1,7 @@
+import 'dart:collection';
+import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:hrm_final_project/Hr-Home/Job/assign_job_tocommitte.dart';
 import 'package:hrm_final_project/Hr-Home/Job/jobapplications_detail.dart';
 import 'package:hrm_final_project/Models/hr_side_job_user_jobapplication_model.dart';
 import 'package:hrm_final_project/uri.dart';
@@ -18,6 +21,8 @@ class JobApplications extends StatefulWidget {
 class _JobApplicationsState extends State<JobApplications> {
   List<JobuserjobapplicationmodelDart> jobapplicationlist = [];
 
+  List<int> selectedItems = []; // Temporary array to store selected items
+
   _Filter? _selectedFilter; //This line only use for dropdownfilter
 
   final List<_Filter> _filters = [
@@ -28,11 +33,12 @@ class _JobApplicationsState extends State<JobApplications> {
     _Filter(name: 'Assistant Professor', isSelected: false),
     _Filter(name: 'Professor', isSelected: false),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Job Applications"),
+          title: const Text("Job Applications"),
           centerTitle: true,
         ),
         body: FutureBuilder(
@@ -105,140 +111,6 @@ class _JobApplicationsState extends State<JobApplications> {
                       ),
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: Row(
-                  //     children: _filters
-                  //         .map(
-                  //           (filter) => Flexible(
-                  //             child: CheckboxListTile(
-                  //               title: Text(filter.name),
-                  //               value: filter.isSelected,
-                  //               onChanged: (bool? value) {
-                  //                 setState(() {
-                  //                   filter.isSelected = value!;
-                  //                 });
-                  //               },
-                  //             ),
-                  //           ),
-                  //         )
-                  //         .toList(),
-                  //   ),
-                  // ),
-                  // Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: Row(
-                  //     children: [
-                  //       // Flexible(
-                  //       //   child: CheckboxListTile(
-                  //       //     title: Text(_filters[0].name),
-                  //       //     value: _filters[0].isSelected,
-                  //       //     onChanged: (bool? value) {
-                  //       //       setState(() {
-                  //       //         _filters[0].isSelected = value!;
-                  //       //       });
-                  //       //     },
-                  //       //   ),
-                  //       // ),
-                  //       Padding(
-                  //         padding: const EdgeInsets.only(left: 40),
-                  //         child: Flexible(
-                  //           fit: FlexFit.loose,
-                  //           child: Text(
-                  //             _filters[0].name,
-                  //             style: const TextStyle(fontSize: 20),
-                  //           ),
-                  //         ),
-                  //       ),
-                  //       const SizedBox(
-                  //           width:
-                  //               8.0), // Add space between the text and the checkbox
-                  //       Checkbox(
-                  //         value: _filters[0].isSelected,
-                  //         onChanged: (bool? value) {
-                  //           setState(() {
-                  //             _filters[0].isSelected = value!;
-                  //           });
-                  //         },
-                  //       ),
-
-                  //       Flexible(
-                  //         fit: FlexFit.loose,
-                  //         child: Text(
-                  //           _filters[1].name,
-                  //           style: const TextStyle(fontSize: 20),
-                  //         ),
-                  //       ),
-                  //       const SizedBox(
-                  //           width:
-                  //               8.0), // Add space between the text and the checkbox
-                  //       Checkbox(
-                  //         value: _filters[1].isSelected,
-                  //         onChanged: (bool? value) {
-                  //           setState(() {
-                  //             _filters[1].isSelected = value!;
-                  //           });
-                  //         },
-                  //       ),
-
-                  //       // Flexible(
-                  //       //   child: CheckboxListTile(
-                  //       //     title: Text(_filters[1].name),
-                  //       //     value: _filters[1].isSelected,
-                  //       //     onChanged: (bool? value) {
-                  //       //       setState(() {
-                  //       //         _filters[1].isSelected = value!;
-                  //       //       });
-                  //       //     },
-                  //       //   ),
-                  //       // ),
-                  //       Flexible(
-                  //         fit: FlexFit.loose,
-                  //         child: Text(
-                  //           _filters[2].name,
-                  //           style: const TextStyle(fontSize: 20),
-                  //         ),
-                  //       ),
-                  //       const SizedBox(
-                  //           width:
-                  //               8.0), // Add space between the text and the checkbox
-                  //       Checkbox(
-                  //         value: _filters[2].isSelected,
-                  //         onChanged: (bool? value) {
-                  //           setState(() {
-                  //             _filters[2].isSelected = value!;
-                  //           });
-                  //         },
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(left: 50),
-                  //   child: Row(
-                  //     children: [
-                  //       Flexible(
-                  //         fit: FlexFit.loose,
-                  //         child: Text(
-                  //           _filters[3].name,
-                  //           style: const TextStyle(fontSize: 20),
-                  //         ),
-                  //       ),
-                  //       const SizedBox(
-                  //           width:
-                  //               8.0), // Add space between the text and the checkbox
-                  //       Checkbox(
-                  //         value: _filters[3].isSelected,
-                  //         onChanged: (bool? value) {
-                  //           setState(() {
-                  //             _filters[3].isSelected = value!;
-                  //           });
-                  //         },
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  // Add this line
                   Expanded(
                     child: GridView.builder(
                         gridDelegate:
@@ -248,33 +120,44 @@ class _JobApplicationsState extends State<JobApplications> {
                               5.0, // Decreased from MediaQuery.of(context).size.height * 0.09
                           crossAxisSpacing:
                               10.0, // Decreased from MediaQuery.of(context).size.width * 0.09
-                          childAspectRatio: 3.2 / 2.8,
+                          childAspectRatio: 3.2 / 3.2,
                         ),
                         itemCount: filteredJobApplications.length,
                         itemBuilder: ((context, index) {
-                          return Container(
-                            // change color or style when selected
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                top: MediaQuery.of(context).size.height * 0.03,
-                                left: MediaQuery.of(context).size.width * 0.01,
-                                right: MediaQuery.of(context).size.width * 0.01,
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              JobApplicationDetail(
-                                                uid: widget.uid,
-                                                applicationid:
-                                                    filteredJobApplications[
-                                                            index]
-                                                        .jobApplicationId,
-                                              )));
-                                },
-                                child: Container(
+                          bool isSelected = selectedItems.contains(index);
+                          return Padding(
+                            padding: EdgeInsets.only(
+                              top: MediaQuery.of(context).size.height * 0.03,
+                              left: MediaQuery.of(context).size.width * 0.01,
+                              right: MediaQuery.of(context).size.width * 0.01,
+                            ),
+                            child: GestureDetector(
+                              // onLongPress: () {},
+                              onTap: () {
+                                setState(() {
+                                  if (isSelected) {
+                                    //ya isSelected ko itembuilder ka ander create kiya ha or isayselecteditems ka index da diya ha
+                                    selectedItems.remove(
+                                        index); // Item is already selected, remove it from the list
+                                  } else {
+                                    selectedItems.add(
+                                        index); // Item is not selected, add it to the list
+                                  }
+                                });
+
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             JobApplicationDetail(
+                                //               uid: widget.uid,
+                                //               applicationid:
+                                //                   filteredJobApplications[index]
+                                //                       .jobApplicationId,
+                                //             )));
+                              },
+                              child: Stack(children: [
+                                Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     color: Colors.grey.shade200,
@@ -371,7 +254,7 @@ class _JobApplicationsState extends State<JobApplications> {
                                                 ]),
                                           ),
                                         ),
-                                        // const SizedBox(height: 4),
+                                        const SizedBox(height: 4),
                                         // Padding(
                                         //   padding:
                                         //       const EdgeInsets.only(left: 30),
@@ -395,11 +278,54 @@ class _JobApplicationsState extends State<JobApplications> {
                                     ),
                                   ),
                                 ),
-                              ),
+                                if (isSelected) // Add this line
+                                  const Positioned(
+                                    top:
+                                        5, // Adjust the position of the tick mark as per your design
+                                    right:
+                                        5, // Adjust the position of the tick mark as per your design
+                                    child: Icon(
+                                      Icons.check_circle_outline,
+                                      color: Colors.green,
+                                      size: 40,
+                                    ),
+                                  ),
+                              ]),
                             ),
                           );
                         })),
                   ),
+                  Visibility(
+                    visible: selectedItems.isNotEmpty,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Use the selectedItems array to perform some action on the selected items
+                        List<JobuserjobapplicationmodelDart>
+                            selectedJobApplications = [];
+                        for (int index in selectedItems) {
+                          selectedJobApplications
+                              .add(filteredJobApplications[index]);
+                          print(
+                              'Selected item index: $index, ID: ${filteredJobApplications[index].jobApplicationId}');
+                          // Perform action with the selected item
+                        }
+
+                        // Navigate to the next page and pass the selected job applications
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AssignJobToCommittee(
+                              uid: widget.uid,
+                              jobappid: selectedJobApplications
+                                  .map((job) => job.jobApplicationId)
+                                  .toList(),
+                            ),
+                          ),
+                        );
+                      },
+                      child: const Text("Perform Action"),
+                    ),
+                  )
                 ]);
               } else {
                 return const Center(child: CircularProgressIndicator());
@@ -431,7 +357,8 @@ class _JobApplicationsState extends State<JobApplications> {
 }
 
 class _Filter {
-  String name;
+  String
+      name; // is name ko snapshot has data ka nechay jo condition ha us ma title ka equal kiya huva ha to ya title ki base pa result show karway gi
   bool isSelected;
 
   _Filter({required this.name, required this.isSelected});

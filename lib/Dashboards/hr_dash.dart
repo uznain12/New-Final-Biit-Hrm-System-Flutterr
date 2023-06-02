@@ -93,7 +93,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.work),
+                leading: const Icon(Icons.post_add),
                 title: const Text(
                   'Add Job ',
                 ),
@@ -107,7 +107,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.work),
+                leading: const Icon(Icons.work_outline_sharp),
                 title: const Text(
                   'Posted Jobs ',
                 ),
@@ -135,7 +135,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.work),
+                leading: const Icon(Icons.group_add),
                 title: const Text(
                   'Committe ',
                 ),
@@ -151,10 +151,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.present_to_all),
+                leading: const Icon(Icons.calendar_today),
                 title: const Text(
                   'Attendance Report',
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(),
                 ),
                 onTap: () {
                   Navigator.push(

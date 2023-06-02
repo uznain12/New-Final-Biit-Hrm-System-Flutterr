@@ -170,38 +170,14 @@ class _AllPostedJobsState extends State<AllPostedJobs> {
                                           0.01,
                                       left: MediaQuery.of(context).size.width *
                                           0.01),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(
-                                        height: 4,
-                                      ),
-                                      Text(
-                                        "Title: ${filteredJobApplications[index].title}",
-                                        style: const TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w900,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        "Salary:${filteredJobApplications[index].salary.toString()}",
-                                        style: const TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w900,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        "Location:   ${filteredJobApplications[index].location}",
-                                        style: const TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w900,
-                                        ),
-                                      ),
-                                      Row(
+                                  child: Stack(children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.8),
+                                      child: Column(
                                         children: [
                                           IconButton(
                                             onPressed: () {
@@ -234,18 +210,61 @@ class _AllPostedJobsState extends State<AllPostedJobs> {
                                                 ),
                                               );
                                             },
-                                            icon: const Icon(Icons.delete),
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                            ),
                                           ),
                                           const SizedBox(
-                                            width: 30,
+                                            height: 20,
                                           ),
                                           IconButton(
                                               onPressed: () {},
-                                              icon: const Icon(Icons.edit))
+                                              icon: const Icon(
+                                                Icons.edit,
+                                                color: Colors.green,
+                                              ))
                                         ],
-                                      )
-                                    ],
-                                  ),
+                                      ),
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(
+                                          height: 4,
+                                        ),
+                                        Text(
+                                          "Title: ${filteredJobApplications[index].title}",
+                                          style: const TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w900,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          "Salary:${filteredJobApplications[index].salary.toString()}",
+                                          style: const TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w900,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          "Location:   ${filteredJobApplications[index].location}",
+                                          style: const TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w900,
+                                          ),
+                                        ),
+                                        ElevatedButton(
+                                            onPressed: () {},
+                                            child: const Text("Close Job"))
+                                      ],
+                                    ),
+                                  ]),
                                 ),
                               ),
                             );
