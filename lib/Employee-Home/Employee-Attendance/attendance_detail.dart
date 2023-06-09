@@ -5,6 +5,7 @@ import 'package:hrm_final_project/uri.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
+// ignore: must_be_immutable
 class EmployeeAttendanceReportDeatil extends StatefulWidget {
   int? uid;
   DateTime? Date;

@@ -1,0 +1,9 @@
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Example: Expose the entire external storage directory -->
+    <external-path name="external_files" path="." />
+    <!-- Example: Expose the app-specific external files directory -->
+    <external-files-path name="external_files" path="." />
+    <!-- Example: Expose the app-specific external cache directory -->
+    <external-cache-path name="external_cache" path="." />
+    <!-- Add more file paths as needed -->
+</paths>

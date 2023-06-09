@@ -56,9 +56,9 @@ class Leavewithusermodel {
   factory Leavewithusermodel.fromJson(Map<String, dynamic> json) =>
       Leavewithusermodel(
         uid: json["Uid"],
-        fname: json["Fname"],
-        lname: json["Lname"],
-        email: json["email"],
+        fname: json["Fname"] ?? '',
+        lname: json["Lname"] ?? '',
+        email: json["email"] ?? '',
         mobile: json["mobile"] ?? '',
         cnic: json["cnic"] ?? '',
         dob: json["dob"] != null
@@ -66,15 +66,15 @@ class Leavewithusermodel {
             : DateTime.now(), // or some other default date
         gender: json["gender"] ?? '',
         address: json["address"] ?? '',
-        password: json["password"],
-        role: json["role"],
+        password: json["password"] ?? '',
+        role: json["role"] ?? '',
         image: json["image"] ?? '',
         leaveappid: json["leaveappid"] ?? 0,
         leavetype: json["leavetype"] ?? '',
         startdate: json["startdate"] ?? '',
         enddate: json["enddate"] ?? '',
         reason: json["reason"] ?? '',
-        status: json["status"],
+        status: json["status"] ?? '',
         applydate: json["applydate"] != null
             ? DateTime.parse(json["applydate"])
             : DateTime.now(),

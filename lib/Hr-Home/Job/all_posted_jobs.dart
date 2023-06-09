@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:hrm_final_project/Hr-Home/Job/close_posted_job.dart';
 import 'package:hrm_final_project/Models/job_model.dart';
 import 'package:hrm_final_project/uri.dart';
 import 'package:http/http.dart' as http;
@@ -260,7 +261,51 @@ class _AllPostedJobsState extends State<AllPostedJobs> {
                                           ),
                                         ),
                                         ElevatedButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CloseJobScreen(
+                                                      jobid:
+                                                          filteredJobApplications[
+                                                                  index]
+                                                              .jid,
+                                                      title:
+                                                          filteredJobApplications[
+                                                                  index]
+                                                              .title,
+                                                      qualification:
+                                                          filteredJobApplications[
+                                                                  index]
+                                                              .qualification,
+                                                      Salary:
+                                                          filteredJobApplications[
+                                                                  index]
+                                                              .salary,
+                                                      experience:
+                                                          filteredJobApplications[
+                                                                  index]
+                                                              .experience,
+                                                      LastDateOfApply:
+                                                          filteredJobApplications[
+                                                                  index]
+                                                              .lastDateOfApply,
+                                                      Location:
+                                                          filteredJobApplications[
+                                                                  index]
+                                                              .location,
+                                                      Description:
+                                                          filteredJobApplications[
+                                                                  index]
+                                                              .description,
+                                                      noofvacancie:
+                                                          filteredJobApplications[
+                                                                  index]
+                                                              .noofvacancie,
+                                                    ),
+                                                  ));
+                                            },
                                             child: const Text("Close Job"))
                                       ],
                                     ),

@@ -5,6 +5,7 @@ import 'package:hrm_final_project/Employee-Home/Employee-Attendance/attendance.d
 import 'package:hrm_final_project/Employee-Home/Employee-Committee/comittee_home.dart';
 import 'package:hrm_final_project/Employee-Home/Employee-Leave/apply_for_leave.dart';
 import 'package:hrm_final_project/Employee-Home/Employee-Leave/employee_all_leave_applications.dart';
+import 'package:hrm_final_project/Employee-Home/Employee-Leave/with_filter_apply_for_leave.dart';
 import 'package:hrm_final_project/Login-Signup/login.dart';
 import 'package:hrm_final_project/Models/user_model.dart';
 import 'package:hrm_final_project/uri.dart';
@@ -17,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // ignore: must_be_immutable
 class HiredEmployeeDashboard extends StatefulWidget {
   int? uid;
+  // ignore: use_key_in_widget_constructors
   HiredEmployeeDashboard({required this.uid});
 
   @override
@@ -112,24 +114,25 @@ class _HiredEmployeeDashboardState extends State<HiredEmployeeDashboard> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EmployeeApplyLeave(uid: widget.uid),
+                      builder: (context) =>
+                          WithFilterEmployeeApplyForLeave(uid: widget.uid),
                     ),
                   );
                 },
               ),
-              // ListTile(
-              //   leading: const Icon(Icons.group),
-              //   title: const Text('Committee'),
-              //   onTap: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) =>
-              //             EmployeeMainCommittePage(uid: widget.uid),
-              //       ),
-              //     );
-              //   },
-              // ),
+              ListTile(
+                leading: const Icon(Icons.group),
+                title: const Text('Committee'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          EmployeeMainCommittePage(uid: widget.uid),
+                    ),
+                  );
+                },
+              ),
               ListTile(
                 leading: const Icon(Icons.settings),
                 title: const Text('Setting'),

@@ -41,6 +41,7 @@ dependencies:
   http: ^0.13.5
   image_picker: ^0.8.7+2
   font_awesome_flutter: ^9.1.0 
+  syncfusion_flutter_pdfviewer: any
 
 
   json_annotation: 

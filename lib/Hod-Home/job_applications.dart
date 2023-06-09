@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:hrm_final_project/Hod-Home/employee_remarks_onjob.dart';
 import 'package:hrm_final_project/Hr-Home/Job/assign_job_tocommitte.dart';
 import 'package:hrm_final_project/Hr-Home/Job/jobapplications_detail.dart';
 import 'package:hrm_final_project/Models/hr_side_job_user_jobapplication_model.dart';
@@ -10,15 +11,15 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 // ignore: must_be_immutable
-class JobApplications extends StatefulWidget {
+class HodSideJobApplications extends StatefulWidget {
   int? uid;
-  JobApplications({super.key, required this.uid});
+  HodSideJobApplications({super.key, required this.uid});
 
   @override
-  State<JobApplications> createState() => _JobApplicationsState();
+  State<HodSideJobApplications> createState() => _HodSideJobApplicationsState();
 }
 
-class _JobApplicationsState extends State<JobApplications> {
+class _HodSideJobApplicationsState extends State<HodSideJobApplications> {
   List<JobuserjobapplicationmodelDart> jobapplicationlist = [];
 
   List<int> selectedItems = []; // Temporary array to store selected items
@@ -149,11 +150,19 @@ class _JobApplicationsState extends State<JobApplications> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            JobApplicationDetail(
-                                              uid: widget.uid,
-                                              applicationid:
+                                            EmployeeRemarksOnjob(
+                                              DocumentPath:
+                                                  filteredJobApplications[index]
+                                                      .documentPath,
+                                              appuid:
+                                                  filteredJobApplications[index]
+                                                      .userUid,
+                                              jobappid:
                                                   filteredJobApplications[index]
                                                       .jobApplicationId,
+                                              Jid:
+                                                  filteredJobApplications[index]
+                                                      .jobJid,
                                             )));
                               },
                               child: Stack(children: [
@@ -254,7 +263,7 @@ class _JobApplicationsState extends State<JobApplications> {
                                                 ]),
                                           ),
                                         ),
-                                        // const SizedBox(height: 4),
+                                        const SizedBox(height: 4),
                                         // Padding(
                                         //   padding:
                                         //       const EdgeInsets.only(left: 30),
@@ -295,46 +304,43 @@ class _JobApplicationsState extends State<JobApplications> {
                           );
                         })),
                   ),
-                  Visibility(
-                    visible: selectedItems.isNotEmpty,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Use the selectedItems array to perform some action on the selected items
-                        List<JobuserjobapplicationmodelDart>
-                            selectedJobApplications = [];
-                        for (int index in selectedItems) {
-                          selectedJobApplications
-                              .add(filteredJobApplications[index]);
-                          print(
-                              'Selected item index: $index, ID: ${filteredJobApplications[index].jobApplicationId}');
-                          // Perform action with the selected item
-                        }
+                  // Visibility(
+                  //   visible: selectedItems.isNotEmpty,
+                  //   child: ElevatedButton(
+                  //     onPressed: () {
+                  //       // Use the selectedItems array to perform some action on the selected items
+                  //       List<JobuserjobapplicationmodelDart>
+                  //           selectedJobApplications = [];
+                  //       for (int index in selectedItems) {
+                  //         selectedJobApplications
+                  //             .add(filteredJobApplications[index]);
+                  //         print(
+                  //             'Selected item index: $index, ID: ${filteredJobApplications[index].jobApplicationId}');
+                  //         // Perform action with the selected item
+                  //       }
 
-                        // Navigate to the next page and pass the selected job applications
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AssignJobToCommittee(
-                              uid: widget.uid,
-                              useruid: selectedJobApplications
-                                  .map((job) => job.userUid)
-                                  .toList(),
-                              jobappid: selectedJobApplications
-                                  .map((job) => job.jobApplicationId)
-                                  .toList(),
-                              jid: selectedJobApplications
-                                  .map((job) => job.jobJid)
-                                  .toList(),
-                              docupath: selectedJobApplications
-                                  .map((job) => job.documentPath)
-                                  .toList(),
-                            ),
-                          ),
-                        );
-                      },
-                      child: const Text("Perform Action"),
-                    ),
-                  )
+                  //       // Navigate to the next page and pass the selected job applications
+                  //   //     Navigator.push(
+                  //   //       context,
+                  //   //       MaterialPageRoute(
+                  //   //         builder: (context) => AssignJobToCommittee(
+                  //   //           uid: widget.uid,
+                  //   //           jobappid: selectedJobApplications
+                  //   //               .map((job) => job.jobApplicationId)
+                  //   //               .toList(),
+                  //   //           jid: selectedJobApplications
+                  //   //               .map((job) => job.jobJid)
+                  //   //               .toList(),
+                  //   //           docupath: selectedJobApplications
+                  //   //               .map((job) => job.documentPath)
+                  //   //               .toList(),
+                  //   //         ),
+                  //   //       ),
+                  //   //     );
+                  //   //   },
+                  //   //   child: const Text("Perform Action"),
+                  //   // ),
+                  // )
                 ]);
               } else {
                 return const Center(child: CircularProgressIndicator());
@@ -345,7 +351,7 @@ class _JobApplicationsState extends State<JobApplications> {
   Future<List<JobuserjobapplicationmodelDart>> fetchcuser() async {
     //response keyword khud sa bnaya ha
     final response = await http.get(Uri.parse(
-        'http://$ip/HrmPractise02/api/JobApplication/NewAllJobApplicationsGet')); // is ma aik variable bnaya ha response ka name sa or phir get method ka through api ko hit kar rahay hn is ka data aik data variable ma store karway ga
+        'http://$ip/HrmPractise02/api/JobApplication/AssignJobapplicationGet')); // is ma aik variable bnaya ha response ka name sa or phir get method ka through api ko hit kar rahay hn is ka data aik data variable ma store karway ga
     var Data = jsonDecode(response.body
         .toString()); // decode kar ka data variable ma store kar rahay hn
     if (response.statusCode == 200) {

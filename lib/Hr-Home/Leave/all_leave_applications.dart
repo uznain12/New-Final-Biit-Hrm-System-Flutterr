@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hrm_final_project/Hr-Home/Leave/all_approved_leaves.dart';
 import 'package:hrm_final_project/Hr-Home/Leave/all_pending_leaves.dart';
 import 'package:hrm_final_project/Hr-Home/Leave/all_rejected_leaves.dart';
-import 'package:hrm_final_project/Hr-Home/Leave/leave_detail_action.dart';
+import 'package:hrm_final_project/Hr-Home/Leave/total_leave_detail.dart';
 import 'package:hrm_final_project/Models/leave_and_user_model.dart';
 import 'package:hrm_final_project/uri.dart';
 import 'package:http/http.dart' as http;
@@ -28,6 +28,13 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
     _widget = AllLeaveApplications();
   }
 
+  _Filter? _selectedFilter; //This line only use for dropdownfilter
+
+  final List<_Filter> _filters = [
+    _Filter(name: 'approved', isSelected: false),
+    _Filter(name: 'rejected', isSelected: false),
+    _Filter(name: 'pending', isSelected: false),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,54 +46,123 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
             future: fetchleaveapplication(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                List<Leavewithusermodel> filteredJLeaveApplications = [];
+                if (_filters.any((filter) => filter.isSelected)) {
+                  for (final leaveApplication in laveapplicationlist) {
+                    for (final filter in _filters) {
+                      if (filter.isSelected &&
+                          leaveApplication.status
+                                  .toString()
+                                  .trim()
+                                  .toLowerCase() ==
+                              filter.name.toLowerCase().trim()) {
+                        filteredJLeaveApplications.add(leaveApplication);
+                        break;
+                      }
+                    }
+                  }
+                } else {
+                  filteredJLeaveApplications = List.from(laveapplicationlist);
+                }
                 return Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment
-                          .spaceAround, // distribute buttons evenly
-                      children: <Widget>[
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AllPendingLeave()));
-                            // button press code here
-                          },
-                          child: Text('pending'),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: MediaQuery.of(context).size.width * 0.36),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 2.0),
+                        margin: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 2.0,
+                          ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AllAprovedLeave()));
-                            // button press code here
+                        child: DropdownButton<_Filter>(
+                          hint: const Text(
+                            'Leave Type',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                          value: _selectedFilter,
+                          onChanged: (_Filter? newValue) {
+                            setState(() {
+                              _selectedFilter = newValue;
+                              if (_selectedFilter != null) {
+                                _selectedFilter!.isSelected =
+                                    !_selectedFilter!.isSelected;
+                              }
+                            });
                           },
-                          child: Text('Approved'),
+                          items: _filters
+                              .map<DropdownMenuItem<_Filter>>((_Filter filter) {
+                            return DropdownMenuItem<_Filter>(
+                              value: filter,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(filter.name),
+                                  if (filter.isSelected)
+                                    Icon(
+                                      Icons.check,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AllRejectedLeaves()));
-                            // button press code here
-                          },
-                          child: const Text('Rejected'),
-                        ),
-                      ],
+                      ),
                     ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment
+                    //       .spaceAround, // distribute buttons evenly
+                    //   children: <Widget>[
+                    //     ElevatedButton(
+                    //       onPressed: () {
+                    //         Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (context) => AllPendingLeave()));
+                    //         // button press code here
+                    //       },
+                    //       child: Text('pending'),
+                    //     ),
+                    //     ElevatedButton(
+                    //       onPressed: () {
+                    //         Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (context) => AllAprovedLeave()));
+                    //         // button press code here
+                    //       },
+                    //       child: Text('Approved'),
+                    //     ),
+                    //     ElevatedButton(
+                    //       onPressed: () {
+                    //         Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (context) => AllRejectedLeaves()));
+                    //         // button press code here
+                    //       },
+                    //       child: const Text('Rejected'),
+                    //     ),
+                    //   ],
+                    // ),,
+
                     Expanded(
                       child: ListView.builder(
-                          itemCount: laveapplicationlist.length,
+                          itemCount: filteredJLeaveApplications.length,
                           itemBuilder: ((context, index) {
                             return Padding(
                               padding: EdgeInsets.only(
                                   top: MediaQuery.of(context).size.height *
                                       0.03),
                               child: Container(
-                                height: 150,
+                                height: 200,
                                 decoration: BoxDecoration(
                                     color: Colors.grey.shade300,
                                     border: Border.all(
@@ -141,7 +217,7 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
                                                 ),
                                                 TextSpan(
                                                   text:
-                                                      "${laveapplicationlist[index].fname} ${laveapplicationlist[index].lname} ",
+                                                      "${filteredJLeaveApplications[index].fname} ${filteredJLeaveApplications[index].lname} ",
                                                   style: const TextStyle(
                                                     fontStyle: FontStyle.italic,
                                                   ),
@@ -171,7 +247,37 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
                                                 ),
                                                 TextSpan(
                                                   text:
-                                                      "${laveapplicationlist[index].leavetype}",
+                                                      "${filteredJLeaveApplications[index].leavetype}",
+                                                  style: const TextStyle(
+                                                    fontStyle: FontStyle.italic,
+                                                  ),
+                                                ),
+                                              ]),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.1),
+                                        child: RichText(
+                                          text: TextSpan(
+                                              style:
+                                                  DefaultTextStyle.of(context)
+                                                      .style,
+                                              children: [
+                                                const TextSpan(
+                                                  text:
+                                                      "Status:                 ",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      "${filteredJLeaveApplications[index].status}",
                                                   style: const TextStyle(
                                                     fontStyle: FontStyle.italic,
                                                   ),
@@ -192,33 +298,33 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            LeaveDetailPlusAction(
+                                                            TotalLeaveDetailOfApplicant(
                                                               uid:
-                                                                  laveapplicationlist[
+                                                                  filteredJLeaveApplications[
                                                                           index]
                                                                       .uid,
                                                               reson:
-                                                                  laveapplicationlist[
+                                                                  filteredJLeaveApplications[
                                                                           index]
                                                                       .reason,
                                                               leavetype:
-                                                                  laveapplicationlist[
+                                                                  filteredJLeaveApplications[
                                                                           index]
                                                                       .leavetype,
                                                               sdate:
-                                                                  laveapplicationlist[
+                                                                  filteredJLeaveApplications[
                                                                           index]
                                                                       .startdate,
                                                               edate:
-                                                                  laveapplicationlist[
+                                                                  filteredJLeaveApplications[
                                                                           index]
                                                                       .enddate,
                                                               apdate:
-                                                                  laveapplicationlist[
+                                                                  filteredJLeaveApplications[
                                                                           index]
                                                                       .applydate,
                                                               leavid:
-                                                                  laveapplicationlist[
+                                                                  filteredJLeaveApplications[
                                                                           index]
                                                                       .leaveappid,
                                                             )));
@@ -257,4 +363,12 @@ class _AllLeaveApplicationsState extends State<AllLeaveApplications> {
       return laveapplicationlist;
     }
   }
+}
+
+class _Filter {
+  String
+      name; // is name ko snapshot has data ka nechay jo condition ha us ma title ka equal kiya huva ha to ya title ki base pa result show karway gi
+  bool isSelected;
+
+  _Filter({required this.name, required this.isSelected});
 }

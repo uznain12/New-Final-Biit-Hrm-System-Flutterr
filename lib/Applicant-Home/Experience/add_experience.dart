@@ -263,7 +263,8 @@ class _AddExperienceState extends State<AddExperience> {
       "Company": _companyController.text,
       "Title": _titleController.text,
       "Startdate": _startDateController.text,
-      "currentwork": "currently working",
+      "currentwork":
+          "currently working", //isworking ? "currently working" : "", // "currently working" if true, empty string if false
       "Enddate": _endDateController.text,
       "otherskill": _OtherskillController.text,
       // "Degree": _selectedOption,

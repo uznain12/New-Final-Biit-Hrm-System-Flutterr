@@ -295,6 +295,7 @@ class _JobPostState extends State<JobPost> {
       "LastDateOfApply": _lastDateofapplyController.text,
       "Location": _locationController.text,
       "Description": _descriptionController.text,
+      "jobstatus": 'active'
     };
     var body = jsonEncode(data);
     var urlParse = Uri.parse(url);

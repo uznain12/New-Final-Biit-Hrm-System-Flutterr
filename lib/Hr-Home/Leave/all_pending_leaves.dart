@@ -210,7 +210,7 @@ class _AllPendingLeaveState extends State<AllPendingLeave> {
                                                 ),
                                                 TextSpan(
                                                   text:
-                                                      "${filteredLeaveApplications[index].fname} ${laveapplicationlist[index].lname} ",
+                                                      "${filteredLeaveApplications[index].fname} ${filteredLeaveApplications[index].lname} ",
                                                   style: const TextStyle(
                                                     fontStyle: FontStyle.italic,
                                                   ),
@@ -269,20 +269,8 @@ class _AllPendingLeaveState extends State<AllPendingLeave> {
                                                   ),
                                                 ),
                                                 TextSpan(
-                                                  text: filteredLeaveApplications[
-                                                                  index]
-                                                              .applydate ==
-                                                          null
-                                                      ? 'No Date Provided'
-                                                      : _formatDate(
-                                                          DateTime.parse(
-                                                              laveapplicationlist[
-                                                                      index]
-                                                                  .applydate
-                                                                  .toString())),
-                                                  style: const TextStyle(
-                                                    fontStyle: FontStyle.italic,
-                                                  ),
+                                                  text:
+                                                      "${_formatDate(DateTime.parse(filteredLeaveApplications[index].applydate.toString()))}",
                                                 ),
                                               ]),
                                         ),

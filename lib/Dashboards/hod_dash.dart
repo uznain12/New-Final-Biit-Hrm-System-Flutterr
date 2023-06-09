@@ -5,6 +5,7 @@ import 'package:hrm_final_project/Employee-Home/Employee-Attendance/attendance.d
 import 'package:hrm_final_project/Employee-Home/Employee-Committee/comittee_home.dart';
 import 'package:hrm_final_project/Employee-Home/Employee-Leave/apply_for_leave.dart';
 import 'package:hrm_final_project/Employee-Home/Employee-Leave/employee_all_leave_applications.dart';
+import 'package:hrm_final_project/Hod-Home/job_applications.dart';
 import 'package:hrm_final_project/Login-Signup/login.dart';
 import 'package:hrm_final_project/Models/user_model.dart';
 import 'package:hrm_final_project/uri.dart';
@@ -79,69 +80,6 @@ class _HodDashboardState extends State<HodDashboard> {
                   );
                 },
               ),
-              // ListTile(
-              //   leading: const Icon(Icons.done),
-              //   title: const Text('Attendance'),
-              //   onTap: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) =>
-              //             EmployeeAttendanceReport(uid: widget.uid),
-              //       ),
-              //     );
-              //   },
-              // ),
-              // ListTile(
-              //   leading: const Icon(Icons.assignment),
-              //   title: const Text('Leaves'),
-              //   onTap: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) =>
-              //             EmployeeLeaveApplication(uid: widget.uid),
-              //       ),
-              //     );
-              //   },
-              // ),
-              // ListTile(
-              //   leading: const Icon(Icons.request_quote),
-              //   title: const Text('Leave Request'),
-              //   onTap: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) => EmployeeApplyLeave(uid: widget.uid),
-              //       ),
-              //     );
-              //   },
-              // ),
-              // ListTile(
-              //   leading: const Icon(Icons.group),
-              //   title: const Text('Committee'),
-              //   onTap: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) =>
-              //             EmployeeMainCommittePage(uid: widget.uid),
-              //       ),
-              //     );
-              //   },
-              // ),
-              // ListTile(
-              //   leading: const Icon(Icons.settings),
-              //   title: const Text('Setting'),
-              //   onTap: () {
-              //     // Navigator.push(
-              //     //   context,
-              //     //   MaterialPageRoute(
-              //     //     builder: (context) => ApplicantApplyApplications(),
-              //     //   ),
-              //     // );
-              //   },
-              // ),
               ListTile(
                 leading: const Icon(Icons.logout),
                 title: const Text(
@@ -174,8 +112,8 @@ class _HodDashboardState extends State<HodDashboard> {
             ),
             Padding(
               padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.15,
-                  left: MediaQuery.of(context).size.width * 0.05),
+                  top: MediaQuery.of(context).size.height * 0.25,
+                  left: MediaQuery.of(context).size.width * 0.25),
               child: Row(
                 children: [
                   InkWell(
@@ -183,13 +121,13 @@ class _HodDashboardState extends State<HodDashboard> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => EmployeeApplyLeave(
+                              builder: (context) => HodSideJobApplications(
                                     uid: widget.uid,
                                   )));
                     },
                     child: Container(
-                      height: 150,
-                      width: 150,
+                      height: 200,
+                      width: 200,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         gradient: LinearGradient(
@@ -210,7 +148,7 @@ class _HodDashboardState extends State<HodDashboard> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
                             Icon(
-                              Icons.event_note,
+                              Icons.work,
                               size: 60,
                               color: Colors.blue,
                             ),
@@ -218,117 +156,10 @@ class _HodDashboardState extends State<HodDashboard> {
                               height: 6,
                             ),
                             Text(
-                              "Apply For Leave",
+                              "ALL APPLICATIONS",
                               style: TextStyle(
                                   fontSize: 18,
                                   fontFamily: 'RobotoSlab-VariableFont_wght'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 30,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EmployeeLeaveApplication(
-                                    uid: widget.uid,
-                                  )));
-                    },
-                    child: Container(
-                      height: 150,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(
-                          colors: [Colors.grey.shade400, Colors.grey.shade200],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.shade500,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(
-                              Icons.calendar_today_rounded,
-                              size: 60,
-                              color: Colors.blue,
-                            ),
-                            Text(
-                              "Leave Applications",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: 'RobotoSlab-VariableFont_wght'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.39,
-                  left: MediaQuery.of(context).size.width * 0.29),
-              child: Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EmployeeAttendanceReport(
-                                    uid: widget.uid,
-                                  )));
-                    },
-                    child: Container(
-                      height: 150,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(
-                          colors: [Colors.grey.shade400, Colors.grey.shade200],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.shade500,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(
-                              Icons.event,
-                              size: 60,
-                              color: Colors.blue,
-                            ),
-                            Text(
-                              "Attendance",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: 'RobotoSlab-VariableFont_wght',
-                              ),
                             ),
                           ],
                         ),

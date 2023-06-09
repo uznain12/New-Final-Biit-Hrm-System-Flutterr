@@ -10,9 +10,18 @@ import 'dart:convert';
 
 class AssignJobToCommittee extends StatefulWidget {
   int? uid;
+  final List<int>? useruid;
   final List<int>? jobappid;
+  final List<int>? jid;
+  final List<String>? docupath;
 
-  AssignJobToCommittee({super.key, required this.uid, required this.jobappid});
+  AssignJobToCommittee(
+      {super.key,
+      required this.useruid,
+      required this.uid,
+      required this.jobappid,
+      required this.jid,
+      required this.docupath});
 
   @override
   State<AssignJobToCommittee> createState() => _AssignJobToCommitteeState();
@@ -168,6 +177,7 @@ class _AssignJobToCommitteeState extends State<AssignJobToCommittee> {
                                                                 committelist[
                                                                         index]
                                                                     .committeeId!);
+                                                            UpdateJobapplication();
                                                           },
                                                           child: Text('Yes'),
                                                         ),
@@ -205,14 +215,24 @@ class _AssignJobToCommitteeState extends State<AssignJobToCommittee> {
                     }
                   }),
             ),
+            Padding(
+                padding: const EdgeInsets.only(top: 200),
+                child: ElevatedButton(
+                  onPressed: widget.jobappid != null
+                      ? () {
+                          UpdateJobapplication();
+                        }
+                      : null, // Add null check for jobappid
+                  child: Text("Update"),
+                ))
           ],
         ));
   }
 
   Future<List<CommitteModel>> getcommitte() async {
     // Get the current user's UID.
-    final response = await http.get(
-        Uri.parse('http://$ip/HrmPractise02/api/Committee/AllCommitteeGet'));
+    final response = await http.get(Uri.parse(
+        'http://$ip/HrmPractise02/api/Committee/AllCommitteeGet?JobApplicationID=${widget.jobappid}&Jid=${widget.jid}&Uid=${widget.useruid}'));
     var Data = jsonDecode(response.body.toString());
 
     if (response.statusCode == 200) {
@@ -255,6 +275,92 @@ class _AssignJobToCommitteeState extends State<AssignJobToCommittee> {
               committeeAssignSuccess[committeeId] = true;
             });
           }
+        } catch (e) {
+          print('Error occurred: $e');
+        }
+      }
+    }
+  }
+
+  // void UpdateJobapplication() async {
+  //   var url =
+  //       "http://$ip/HrmPractise02/api/JobApplication/NewUpdateJobFileApplication";
+
+  //   if (widget.jobappid != null && widget.jid != null) {
+  //     assert(widget.jobappid!.length == widget.jid!.length);
+
+  //     List<Map<String, dynamic>> requestData = [];
+  //     for (int i = 0; i < widget.jobappid!.length; i++) {
+  //       if (widget.jobappid![i] != null && widget.jid![i] != null) {
+  //         Map<String, dynamic> data = {
+  //           "JobApplicationID": widget.jobappid![i],
+  //           "Uid": widget.uid,
+  //           "Jid": widget.jid![i],
+  //           "status": 'assign',
+  //         };
+  //         requestData.add(data);
+  //       }
+  //     }
+
+  //     if (requestData.isNotEmpty) {
+  //       var boddy = jsonEncode(requestData);
+  //       var urlParse = Uri.parse(url);
+
+  //       try {
+  //         http.Response response = await http.put(
+  //           urlParse,
+  //           body: boddy,
+  //           headers: {"Content-Type": "application/json"},
+  //         );
+
+  //         var dataa = jsonDecode(response.body);
+  //         print(dataa);
+  //       } catch (e) {
+  //         print('Error occurred: $e');
+  //       }
+  //     }
+  //   }
+  // }
+  void UpdateJobapplication() async {
+    var url =
+        "http://$ip/HrmPractise02/api/JobApplication/UpdateJobapplication";
+
+    if (widget.jobappid != null &&
+        widget.useruid != null &&
+        widget.jid != null) {
+      assert(
+        widget.jobappid!.length == widget.useruid!.length &&
+            widget.jobappid!.length == widget.jid!.length,
+      );
+
+      List<Map<String, dynamic>> requestData = [];
+      for (int i = 0; i < widget.jobappid!.length; i++) {
+        if (widget.jobappid![i] != null &&
+            widget.useruid![i] != null &&
+            widget.jid![i] != null) {
+          Map<String, dynamic> data = {
+            "JobApplicationID": widget.jobappid![i],
+            "Uid": widget.useruid![i],
+            "Jid": widget.jid![i],
+            "status": 'assign',
+          };
+          requestData.add(data);
+        }
+      }
+
+      if (requestData.isNotEmpty) {
+        var boddy = jsonEncode(requestData);
+        var urlParse = Uri.parse(url);
+
+        try {
+          http.Response response = await http.put(
+            urlParse,
+            body: boddy,
+            headers: {"Content-Type": "application/json"},
+          );
+
+          var dataa = jsonDecode(response.body);
+          print(dataa);
         } catch (e) {
           print('Error occurred: $e');
         }

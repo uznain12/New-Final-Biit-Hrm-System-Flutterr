@@ -118,8 +118,8 @@ class JobApplicationModel {
           jobApplicationId: json["JobApplicationID"],
           jid: json["Jid"],
           uid: json["Uid"],
-          name: json["name"],
-          status: json["status"],
+          name: json["name"] ?? '',
+          status: json["status"] ?? "",
           DocumentPath: json["DocumentPath"] ?? '');
 
   Map<String, dynamic> toJson() => {

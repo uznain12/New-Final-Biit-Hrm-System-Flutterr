@@ -20,6 +20,7 @@ List<String> _options = [
   'Inter',
   'Bachelor',
   'Master',
+  'PHD',
 ]; // op
 
 String? _selectinstitute;

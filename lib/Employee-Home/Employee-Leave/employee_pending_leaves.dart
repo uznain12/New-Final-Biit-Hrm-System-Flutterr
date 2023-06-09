@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hrm_final_project/Employee-Home/Employee-Leave/employee_all_leave_applications.dart';
 import 'package:hrm_final_project/Employee-Home/Employee-Leave/employee_approved_leaves.dart';
 import 'package:hrm_final_project/Employee-Home/Employee-Leave/employee_rejected_leaves.dart';
-import 'package:hrm_final_project/Models/leave_and_user_model.dart';
+
+import 'package:hrm_final_project/Models/leave_user2_model.dart';
 import 'package:hrm_final_project/uri.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -18,7 +19,7 @@ class EmployeePendingLeave extends StatefulWidget {
 }
 
 class _EmployeePendingLeaveState extends State<EmployeePendingLeave> {
-  List<Leavewithusermodel> laveapplicationlist = [];
+  List<Leavewithusermodel2> laveapplicationlist = [];
   String _formatDate(DateTime date) {
     //ya date ko sai sa show karwanay ka liya bnaya ha like is format ma show hogi date
     return DateFormat('yyyy-MM-dd').format(date);
@@ -129,6 +130,36 @@ class _EmployeePendingLeaveState extends State<EmployeePendingLeave> {
                                       //       ]),
                                       // ),
                                       // Text("First Name: ${userlist[index].fname}"),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.1),
+                                        child: RichText(
+                                          text: TextSpan(
+                                              style:
+                                                  DefaultTextStyle.of(context)
+                                                      .style,
+                                              children: [
+                                                const TextSpan(
+                                                  text:
+                                                      "Total Pending Leaves:                 ",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      // ignore: unnecessary_string_interpolations
+                                                      "${laveapplicationlist[index].totalPending}",
+                                                  style: const TextStyle(
+                                                    fontStyle: FontStyle.italic,
+                                                  ),
+                                                ),
+                                              ]),
+                                        ),
+                                      ),
                                       const SizedBox(height: 4),
                                       Padding(
                                         padding: EdgeInsets.only(
@@ -152,7 +183,7 @@ class _EmployeePendingLeaveState extends State<EmployeePendingLeave> {
                                                 TextSpan(
                                                   text:
                                                       // ignore: unnecessary_string_interpolations
-                                                      "${laveapplicationlist[index].leavetype}",
+                                                      "${laveapplicationlist[index].applications[index].leavetype}",
                                                   style: const TextStyle(
                                                     fontStyle: FontStyle.italic,
                                                   ),
@@ -182,7 +213,7 @@ class _EmployeePendingLeaveState extends State<EmployeePendingLeave> {
                                                 TextSpan(
                                                   text:
                                                       // "${laveapplicationlist[index].applydate.toString()} ",
-                                                      "${_formatDate(DateTime.parse(laveapplicationlist[index].applydate.toString()))}",
+                                                      "${_formatDate(DateTime.parse(laveapplicationlist[index].applications[index].applydate.toString()))}",
                                                   style: const TextStyle(
                                                     fontStyle: FontStyle.italic,
                                                   ),
@@ -211,7 +242,7 @@ class _EmployeePendingLeaveState extends State<EmployeePendingLeave> {
                                                 ),
                                                 TextSpan(
                                                   text:
-                                                      "${laveapplicationlist[index].status} ",
+                                                      "${laveapplicationlist[index].applications[index].status} ",
                                                   style: const TextStyle(
                                                     fontStyle: FontStyle.italic,
                                                   ),
@@ -326,7 +357,7 @@ class _EmployeePendingLeaveState extends State<EmployeePendingLeave> {
             }));
   }
 
-  Future<List<Leavewithusermodel>> fetchleaveapplication(int id) async {
+  Future<List<Leavewithusermodel2>> fetchleaveapplication(int id) async {
     //response keyword khud sa bnaya ha
     final response = await http.get(Uri.parse(
         'http://$ip/HrmPractise02/api/Leave/NewPendingLeaveGet?uid=$id')); // is ma aik variable bnaya ha response ka name sa or phir get method ka through api ko hit kar rahay hn is ka data aik data variable ma store karway ga
@@ -334,8 +365,13 @@ class _EmployeePendingLeaveState extends State<EmployeePendingLeave> {
         .toString()); // decode kar ka data variable ma store kar rahay hn
     if (response.statusCode == 200) {
       laveapplicationlist.clear();
-      for (Map<String, dynamic> index in Data) {
-        laveapplicationlist.add(Leavewithusermodel.fromJson(index));
+
+      if (Data is Map<String, dynamic>) {
+        laveapplicationlist.add(Leavewithusermodel2.fromJson(Data));
+      } else if (Data is List) {
+        for (Map<String, dynamic> index in Data) {
+          laveapplicationlist.add(Leavewithusermodel2.fromJson(index));
+        }
       }
       return laveapplicationlist;
     } else {

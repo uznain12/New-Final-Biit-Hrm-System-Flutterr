@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:hrm_final_project/Hr-Home/pdfviewscree.dart';
 import 'package:hrm_final_project/Models/job_application_model_hr.dart';
 import 'package:hrm_final_project/uri.dart';
 import 'package:http/http.dart' as http;
@@ -646,30 +647,17 @@ class _ApplicantJobDetailState extends State<ApplicantJobDetail> {
                                               ]),
                                         ),
                                         const SizedBox(height: 4),
-                                        RichText(
-                                          text: TextSpan(
-                                              style:
-                                                  DefaultTextStyle.of(context)
-                                                      .style,
-                                              children: [
-                                                const TextSpan(
-                                                  text:
-                                                      "Applicant CV:         ",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text:
-                                                      Jobapplicationdetaillist[
-                                                              index]
-                                                          .DocumentPath,
-                                                  style: const TextStyle(
-                                                    fontStyle: FontStyle.italic,
-                                                  ),
-                                                ),
-                                              ]),
-                                        ),
+                                        GestureDetector(
+                                            onTap: () async {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        HomePage(),
+                                                  ));
+                                            },
+                                            child:
+                                                Text("CV:           View Cv")),
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(top: 20),
@@ -750,6 +738,32 @@ class _ApplicantJobDetailState extends State<ApplicantJobDetail> {
                                                 )),
                                           ),
                                         ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.2,
+                                              top: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.2),
+                                          child: SizedBox(
+                                            width: 200,
+                                            height: 50,
+                                            child: ElevatedButton(
+                                                onPressed: () {
+                                                  UpdateApplication();
+                                                },
+                                                child: const Text(
+                                                  "Done",
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                          'RobotoSlab-Black',
+                                                      fontSize: 18),
+                                                )),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -799,6 +813,28 @@ class _ApplicantJobDetailState extends State<ApplicantJobDetail> {
     var urlParse = Uri.parse(url);
     try {
       http.Response response = await http.post(urlParse,
+          body: boddy, headers: {"Content-Type": "application/json"});
+      var dataa = jsonDecode(response.body);
+      print(dataa);
+    } catch (e) {
+      print('Error occurred: $e');
+    }
+  }
+
+  void UpdateApplication() async {
+    var url =
+        "http://$ip/HrmPractise02/api/JobApplication/UpdateJobapplication";
+    var data = {
+      "JobApplicationID": widget.applicationid,
+
+      "status": "mark",
+
+      // Change this to the appropriate value
+    };
+    var boddy = jsonEncode(data);
+    var urlParse = Uri.parse(url);
+    try {
+      http.Response response = await http.put(urlParse,
           body: boddy, headers: {"Content-Type": "application/json"});
       var dataa = jsonDecode(response.body);
       print(dataa);
