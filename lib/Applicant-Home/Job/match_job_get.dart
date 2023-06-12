@@ -68,7 +68,7 @@ class _BstMatchApplicantApplyJobState extends State<BstMatchApplicantApplyJob> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          'Apply For Job',
+          'Best Match',
           style: TextStyle(
               fontFamily: 'RobotoSlab-Black',
               fontSize: 25,
@@ -366,17 +366,17 @@ class _BstMatchApplicantApplyJobState extends State<BstMatchApplicantApplyJob> {
                       //   ),
                       // ),
 
-                      ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        BstMatchApplicantApplyJob(
-                                          uid: widget.uid,
-                                        )));
-                          },
-                          child: const Text("Best Match")),
+                      // ElevatedButton(
+                      //     onPressed: () {
+                      //       Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //               builder: (context) =>
+                      //                   BstMatchApplicantApplyJob(
+                      //                     uid: widget.uid,
+                      //                   )));
+                      //     },
+                      //     child: const Text("Best Match")),
 
                       Padding(
                         padding: const EdgeInsets.all(12.0),

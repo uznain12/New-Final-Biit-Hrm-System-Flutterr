@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:hrm_final_project/Hr-Home/Job/pdfview.dart';
 import 'package:hrm_final_project/Models/job_application_model_hr.dart';
 import 'package:hrm_final_project/uri.dart';
 import 'package:http/http.dart' as http;
@@ -136,6 +137,34 @@ class _JobApplicationDetailState extends State<JobApplicationDetail> {
                                               ),
                                             ]),
                                       ),
+                                      // RichText(
+                                      //   text: TextSpan(
+                                      //     style: DefaultTextStyle.of(context)
+                                      //         .style,
+                                      //     children: [
+                                      //       const TextSpan(
+                                      //         text: "CV :                 ",
+                                      //         style: TextStyle(
+                                      //           fontWeight: FontWeight.bold,
+                                      //         ),
+                                      //       ),
+                                      //       TextSpan(
+                                      //         text: "Download CV",
+                                      //         style: const TextStyle(
+                                      //           fontStyle: FontStyle.italic,
+                                      //           color: Colors.blue,
+                                      //         ),
+                                      //         recognizer: TapGestureRecognizer()
+                                      //           ..onTap = () {
+                                      //             downloadFile(
+                                      //                 Jobapplicationdetaillist[
+                                      //                         index]
+                                      //                     .DocumentPath);
+                                      //           },
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      // ),
                                       RichText(
                                         text: TextSpan(
                                           style: DefaultTextStyle.of(context)
@@ -148,17 +177,27 @@ class _JobApplicationDetailState extends State<JobApplicationDetail> {
                                               ),
                                             ),
                                             TextSpan(
-                                              text: "Download CV",
+                                              text: "View Cv",
                                               style: const TextStyle(
                                                 fontStyle: FontStyle.italic,
                                                 color: Colors.blue,
                                               ),
                                               recognizer: TapGestureRecognizer()
                                                 ..onTap = () {
-                                                  downloadFile(
+                                                  String documentPath =
                                                       Jobapplicationdetaillist[
                                                               index]
-                                                          .DocumentPath);
+                                                          .DocumentPath;
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          HomePage(
+                                                              documentPath:
+                                                                  filepath +
+                                                                      documentPath),
+                                                    ),
+                                                  );
                                                 },
                                             ),
                                           ],

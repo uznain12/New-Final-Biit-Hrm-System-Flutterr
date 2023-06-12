@@ -48,7 +48,8 @@ class _PersonalUpdateState extends State<PersonalUpdate> {
         await _picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
 
     if (pickedFile != null) {
-      image = File(pickedFile.path);
+      image = pickedFile != null ? File(pickedFile.path) : null;
+
       setState(() {});
     } else {
       print('no image selected');

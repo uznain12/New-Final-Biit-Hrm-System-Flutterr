@@ -77,24 +77,32 @@ class Application {
 
   factory Application.fromJson(Map<String, dynamic> json) => Application(
         uid: json["Uid"],
-        fname: json["Fname"],
-        lname: json["Lname"],
-        email: json["email"],
-        mobile: json["mobile"],
-        cnic: json["cnic"],
-        dob: DateTime.parse(json["dob"]),
-        gender: json["gender"],
-        address: json["address"],
-        password: json["password"],
-        role: json["role"],
-        image: json["image"],
+        fname: json["Fname"] ?? '',
+        lname: json["Lname"] ?? '',
+        email: json["email"] ?? '',
+        mobile: json["mobile"] ?? '',
+        cnic: json["cnic"] ?? '',
+        dob: json["dob"] != null
+            ? DateTime.parse(json["dob"])
+            : DateTime.now(), // or some other default date
+        gender: json["gender"] ?? '',
+        address: json["address"] ?? '',
+        password: json["password"] ?? '',
+        role: json["role"] ?? '',
+        image: json["image"] ?? '',
         leaveappid: json["leaveappid"],
-        leavetype: json["leavetype"],
-        startdate: DateTime.parse(json["startdate"]),
-        enddate: DateTime.parse(json["enddate"]),
-        reason: json["reason"],
-        status: json["status"],
-        applydate: DateTime.parse(json["applydate"]),
+        leavetype: json["leavetype"] ?? '',
+        startdate: json["startdate"] != null
+            ? DateTime.parse(json["startdate"])
+            : DateTime.now(),
+        enddate: json["enddate"] != null
+            ? DateTime.parse(json["enddate"])
+            : DateTime.now(),
+        reason: json["reason"] ?? '',
+        status: json["status"] ?? '',
+        applydate: json["applydate"] != null
+            ? DateTime.parse(json["applydate"])
+            : DateTime.now(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -104,8 +112,7 @@ class Application {
         "email": email,
         "mobile": mobile,
         "cnic": cnic,
-        "dob":
-            "${dob.year.toString().padLeft(4, '0')}-${dob.month.toString().padLeft(2, '0')}-${dob.day.toString().padLeft(2, '0')}",
+        "dob": dob.toIso8601String(),
         "gender": gender,
         "address": address,
         "password": password,
@@ -113,10 +120,8 @@ class Application {
         "image": image,
         "leaveappid": leaveappid,
         "leavetype": leavetype,
-        "startdate":
-            "${startdate.year.toString().padLeft(4, '0')}-${startdate.month.toString().padLeft(2, '0')}-${startdate.day.toString().padLeft(2, '0')}",
-        "enddate":
-            "${enddate.year.toString().padLeft(4, '0')}-${enddate.month.toString().padLeft(2, '0')}-${enddate.day.toString().padLeft(2, '0')}",
+        "startdate": startdate.toIso8601String(),
+        "enddate": enddate.toIso8601String(),
         "reason": reason,
         "status": status,
         "applydate": applydate.toIso8601String(),

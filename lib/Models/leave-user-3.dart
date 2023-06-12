@@ -121,19 +121,21 @@ class Application {
 
   factory Application.fromJson(Map<String, dynamic> json) => Application(
         uid: json["Uid"],
-        fname: json["Fname"],
-        lname: json["Lname"],
-        email: json["email"],
-        mobile: json["mobile"],
-        cnic: json["cnic"],
-        dob: DateTime.parse(json["dob"]),
-        gender: json["gender"],
-        address: json["address"],
-        password: json["password"],
-        role: json["role"],
-        image: json["image"],
+        fname: json["Fname"] ?? '',
+        lname: json["Lname"] ?? '',
+        email: json["email"] ?? '',
+        mobile: json["mobile"] ?? '',
+        cnic: json["cnic"] ?? '',
+        dob: json["dob"] != null
+            ? DateTime.parse(json["dob"])
+            : DateTime.now(), // or some other default date
+        gender: json["gender"] ?? '',
+        address: json["address"] ?? '',
+        password: json["password"] ?? '',
+        role: json["role"] ?? '',
+        image: json["image"] ?? '',
         leaveappid: json["leaveappid"],
-        leavetype: json["leavetype"],
+        leavetype: json["leavetype"] ?? '',
         startdate: DateTime.parse(json["startdate"]),
         enddate: DateTime.parse(json["enddate"]),
         reason: json["reason"],

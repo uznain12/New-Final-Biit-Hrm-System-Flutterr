@@ -41,7 +41,7 @@ class _AllPendingLeaveState extends State<AllPendingLeave> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Pending Applications"),
+          title: const Text("Leave  Applications"),
           centerTitle: true,
         ),
         body: FutureBuilder(

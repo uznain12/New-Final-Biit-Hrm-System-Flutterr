@@ -334,7 +334,7 @@ class _TotalLeaveDetailOfApplicantState
   Future<List<Leavewithusermodel3>> fetchleaveapplication() async {
     //response keyword khud sa bnaya ha
     final response = await http.get(Uri.parse(
-        'http://$ip/HrmPractise02/api/Leave/TotalNewLeaveWithIDGet?uid=${widget.uid}&leaveappid=${widget.leavid}')); // is ma aik variable bnaya ha response ka name sa or phir get method ka through api ko hit kar rahay hn is ka data aik data variable ma store karway ga
+        'http://$ip/HrmPractise02/api/Extra/AgainnewRemainingTotalNewLeaveWithIDGet?uid=${widget.uid}&leaveappid=${widget.leavid}')); // is ma aik variable bnaya ha response ka name sa or phir get method ka through api ko hit kar rahay hn is ka data aik data variable ma store karway ga
     var Data = jsonDecode(response.body
         .toString()); // decode kar ka data variable ma store kar rahay hn
     if (response.statusCode == 200) {

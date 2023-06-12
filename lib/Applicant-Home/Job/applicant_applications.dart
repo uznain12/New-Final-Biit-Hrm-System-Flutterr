@@ -20,7 +20,7 @@ class _ApplicantApplicationsState extends State<ApplicantApplications> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Job Applications"),
+          title: Text("Job Applications Status "),
           centerTitle: true,
         ),
         body: FutureBuilder(
